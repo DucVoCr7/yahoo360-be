@@ -3,6 +3,8 @@
 - backendYahoo360
 
 - Routes: thư mục dẫn đường, khi người dùng vào web, vào đây đầu tiên
+- Services: nhận data từ controllers, thao tác với data đó về phía database
+
 - REST API: là 1 chuẩn viết API, quy định:
     + Khi muốn tạo mới thông tin dùng method post - C(Create)
     + Khi muốn lấy thông tin dùng method get - R(Read)
