@@ -1,22 +1,41 @@
-import pool from "../config/connectDatabase"; // Connect database
-import db from '../models/index'
-import { createUser } from "../services/CRUDServices";
+import CRUDServices from "../services/CRUDServices";
+
 // Hàm truyền vào routes
-export const getCRUD = async (req, res) => {
-    try {
-        const data = await db.users.findAll();
-        console.log(data)
-        return res.render('web.ejs', {data: JSON.stringify(data)})
-    } catch (error) {
-        console.log(error)
+const getCRUD = async (req, res) => {
+    const data = await CRUDServices.getAllUsers()
+    return res.render('web.ejs', {users: data})
+}
+
+const postCRUD = async (req, res)=> {
+    await CRUDServices.createUser(req.body)
+    return res.redirect('/')
+}
+
+const getInfoUserCRUD = async (req, res)=> {
+    if (req.query.id) {
+        const dataUser = await CRUDServices.getInfoUserById(req.query.id)
+        return res.render('updateUser.ejs', {dataUser: dataUser})
+    } else {
+        return res.send('User not found!')
     }
 }
 
-export const postCRUD = async (req, res)=> {
-    try {
-        await createUser(req.body)
+const putCRUD = async (req, res)=> {
+    await CRUDServices.updateUser(req.body)
+    return res.redirect('/')
+}
+const deleteCRUD = async (req, res)=> {
+    if (req.query.id) {
+        await CRUDServices.deleteUser(req.query.id)
         return res.redirect('/')
-    } catch (error) {
-        console.log(error)
+    } else {
+        return res.send('User not found1')
     }
+}
+module.exports = {
+    getCRUD: getCRUD,
+    postCRUD: postCRUD,
+    getInfoUserCRUD: getInfoUserCRUD,
+    putCRUD: putCRUD,
+    deleteCRUD: deleteCRUD,
 }

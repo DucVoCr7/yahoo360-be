@@ -1,10 +1,12 @@
 import express from "express";
-import { getCRUD, postCRUD } from "../controllers/webControllers";
-
+import webControllers from '../controllers/webControllers'
 const router = express.Router()
 
 export const initWebRoutes = (app)=> {
-    router.get('/', getCRUD)
-    router.post('/postCRUD', postCRUD)
+    router.get('/', webControllers.getCRUD)
+    router.post('/postCRUD', webControllers.postCRUD)
+    router.get('/getInfoUserCRUD', webControllers.getInfoUserCRUD)
+    router.post('/putCRUD', webControllers.putCRUD)
+    router.get('/deleteCRUD', webControllers.deleteCRUD)
     return app.use ('/', router)
 }

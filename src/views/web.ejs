@@ -23,36 +23,48 @@
     <div class="container">
         <!-- List Users -->
         <table class="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-              </tr>
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Actions</th>
+                </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-              </tr>
+                <% for (let i=0; i < users.length; i++) { %>
+                    <tr>
+                        <th scope="row">
+                            <%= i + 1 %>
+                        </th>
+                        <td>
+                            <%= users[i].name %>
+                        </td>
+                        <td>
+                            <%= users[i].email %>
+                        </td>
+                        <td>
+                            <%= users[i].phoneNumber %>
+                        </td>
+                        <td>
+                            <%= users[i].gender ? 'Male' : 'Female' %>
+                        </td>
+                        <td>
+                            <%= users[i].address %>
+                        </td>
+                        <td>
+                            <a class="btn btn-warning" href="/getInfoUserCRUD?id=<%= users[i].id %>" role="button">Update</a>
+                            <a class="btn btn-danger" href="/deleteCRUD?id=<%= users[i].id %>" role="button">Delete</a>
+                        </td>
+                    </tr>
+                    <% } %>
             </tbody>
-          </table>
+        </table>
 
-        <!-- CreateUser -->
+        <!-- Create User -->
         <form action="/postCRUD" method="post">
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Create user</label>

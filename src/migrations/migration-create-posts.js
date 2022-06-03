@@ -7,8 +7,7 @@ module.exports = {
       // title: DataTypes.TEXT,
       // category: DataTypes.STRING,
       // content: DataTypes.TEXT,
-      // likesNumber: DataTypes.INTEGER,
-      // commentId: DataTypes.INTEGER
+      // likesNumber: DataTypes.INTEGER
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -31,9 +30,6 @@ module.exports = {
         type: Sequelize.TEXT
       },
       likesNumber: {
-        type: Sequelize.INTEGER
-      },
-      commentId: {
         type: Sequelize.INTEGER
       },
       createdAt: {
