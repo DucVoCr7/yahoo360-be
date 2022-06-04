@@ -79,7 +79,7 @@ const deleteUser = (id)=> {
         try {
             const dataUser = await db.users.findOne({
                 where: {id: id}
-            })
+            }) 
             if (dataUser) {
                 await dataUser.destroy();
                 resolve('Delete user success!')

@@ -1,10 +1,26 @@
-import pool from "../config/connectDatabase"; // Connect database
+import apiServices from '../services/apiServices'
 
-// Hàm truyền vào routes
-// export const getAllUser = async (req, res)=> {
-//     const [rows, fields] = await pool.execute('select * from users')
-//     return res.status(200).json({
-//         message: 'OK getAllUsers',
-//         data: rows
-//     })
-// }
+const login = async (req, res) => {
+    if(!req.body.email && !req.body.password) {
+        return res.status(400).json({
+            mesErrEmail: 'Please enter your email!',
+            mesErrPassword: 'Please enter your password!'
+        })
+    } else if(!req.body.email) {
+        return res.status(400).json({
+            mesErrEmail: 'Please enter your email!'
+        })
+    } else if(!req.body.password) {
+        return res.status(400).json({
+            mesErrPassword: 'Please enter your password!'
+        })
+    } else {
+        const data = await apiServices.handleLogin(req.body.email, req.body.password)
+        return res.status(200).json({
+            ...data
+        })
+    }
+}
+module.exports =  {
+    login: login,
+}
