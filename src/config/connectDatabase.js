@@ -6,7 +6,7 @@ const sequelize = new Sequelize('yahoo360', 'root', null, {
   dialect: 'mysql'
 });
 
-export const checkConnectDatabase = async ()=> {
+const checkConnectDatabase = async ()=> {
     try {
         await sequelize.authenticate();
         console.log('Connection database successfully.');
@@ -14,3 +14,5 @@ export const checkConnectDatabase = async ()=> {
         console.error('Unable to connect to the database:', error);
       }
 }
+
+export default checkConnectDatabase;

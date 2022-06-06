@@ -1,19 +1,19 @@
-import CRUDServices from "../services/CRUDServices";
+import webServices from "../services/webServices";
 
 // Hàm truyền vào routes
 const getCRUD = async (req, res) => {
-    const data = await CRUDServices.getAllUsers()
+    const data = await webServices.getAllUsers()
     return res.render('web.ejs', {users: data})
 }
 
 const postCRUD = async (req, res)=> {
-    await CRUDServices.createUser(req.body)
+    await webServices.createUser(req.body)
     return res.redirect('/')
 }
 
 const getInfoUserCRUD = async (req, res)=> {
     if (req.query.id) {
-        const dataUser = await CRUDServices.getInfoUserById(req.query.id)
+        const dataUser = await webServices.getInfoUserById(req.query.id)
         return res.render('updateUser.ejs', {dataUser: dataUser})
     } else {
         return res.send('User not found!')
@@ -21,17 +21,18 @@ const getInfoUserCRUD = async (req, res)=> {
 }
 
 const putCRUD = async (req, res)=> {
-    await CRUDServices.updateUser(req.body)
+    await webServices.updateUser(req.body)
     return res.redirect('/')
 }
 const deleteCRUD = async (req, res)=> {
     if (req.query.id) {
-        await CRUDServices.deleteUser(req.query.id)
+        await webServices.deleteUser(req.query.id)
         return res.redirect('/')
     } else {
         return res.send('User not found1')
     }
 }
+
 module.exports = {
     getCRUD: getCRUD,
     postCRUD: postCRUD,

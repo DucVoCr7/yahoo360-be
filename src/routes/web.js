@@ -2,7 +2,7 @@ import express from "express";
 import webControllers from '../controllers/webControllers'
 const router = express.Router()
 
-export const initWebRoutes = (app)=> {
+const initWebRoutes = (app)=> {
     router.get('/', webControllers.getCRUD)
     router.post('/postCRUD', webControllers.postCRUD)
     router.get('/getInfoUserCRUD', webControllers.getInfoUserCRUD)
@@ -10,3 +10,5 @@ export const initWebRoutes = (app)=> {
     router.get('/deleteCRUD', webControllers.deleteCRUD)
     return app.use ('/', router)
 }
+
+export default initWebRoutes;

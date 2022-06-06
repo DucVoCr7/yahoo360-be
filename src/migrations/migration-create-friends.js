@@ -2,19 +2,19 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('friends', {
-      // userId: DataTypes.INTEGER,
-      // friendId: DataTypes.INTEGER
-      id: {
+      // status: DataTypes.BOOLEAN
+      userId: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      userId: {
+      friendId: {
+        allowNull: false,
+        primaryKey: true,
         type: Sequelize.INTEGER
       },
-      friendId: {
-        type: Sequelize.INTEGER
+      status: {
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,

@@ -14,7 +14,11 @@ const hashPassword = (password)=> {
 const getAllUsers = ()=> {
     return new Promise(async (resolve, reject)=> {
         try {
-            const data = await db.users.findAll();
+            const data = await db.users.findAll({
+                attributes: {
+                    exclude: ['password'] //Khong tra ra password
+                }
+            });
             resolve(data)
         } catch (error) {
             reject(error)
@@ -40,7 +44,10 @@ const getInfoUserById = (id)=> {
     return new Promise(async (resolve, reject)=> {
         try {
             const dataUser = await db.users.findOne({
-                where: {id: id}
+                where: {id: id},
+                attributes: {
+                    exclude: ['password'] //Khong tra ra password
+                }
             })
             if (dataUser) {
                 resolve(dataUser)
