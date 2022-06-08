@@ -5,10 +5,10 @@ module.exports = {
     async up(queryInterface, Sequelize) {
 
         return await queryInterface.bulkInsert('friends', [
-            { userId: 0, friendId: 5, status: false, createdAt: new Date(), updatedAt: new Date() },
-            { userId: 0, friendId: 6, status: true, createdAt: new Date(), updatedAt: new Date() },
-            { userId: 6, friendId: 0, status: true, createdAt: new Date(), updatedAt: new Date() },
-            { userId: 0, friendId: 7, status: false, createdAt: new Date(), updatedAt: new Date() },
+            { userId: 10, friendId: 5, status: false, createdAt: new Date(), updatedAt: new Date() },
+            { userId: 10, friendId: 6, status: true, createdAt: new Date(), updatedAt: new Date() },
+            { userId: 6, friendId: 10, status: true, createdAt: new Date(), updatedAt: new Date() },
+            { userId: 10, friendId: 7, status: false, createdAt: new Date(), updatedAt: new Date() },
             { userId: 1, friendId: 6, status: true, createdAt: new Date(), updatedAt: new Date() },
             { userId: 6, friendId: 1, status: true, createdAt: new Date(), updatedAt: new Date() },
             { userId: 1, friendId: 7, status: false, createdAt: new Date(), updatedAt: new Date() },

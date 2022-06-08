@@ -13,7 +13,7 @@ module.exports = {
             Array.from(new Array(nUsers)).forEach((element, key1) => {
                 Array.from(new Array(nPhotos)).forEach((element, key2) => {
                     const photo = {
-                        userId: key1,
+                        userId: key1 + 1,
                         photo: faker.image.animals(600, 600), //
                         createdAt: new Date(),
                         updatedAt: new Date()

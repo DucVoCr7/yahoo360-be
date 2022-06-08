@@ -36,6 +36,14 @@ const hashPassword = async (password)=> {
     } catch (error) {return error}
 }
 
+const createAccessToken = (userId) => {
+    return jwt.sign({userId}, process.env.JWT_ACCESS_SECRET, {expiresIn: '1m'})
+}
+
+const createRefreshToken = (userId) => {
+    return jwt.sign({userId}, process.env.JWT_REFRESH_SECRET)
+}
+
 const handleLogin = async (email, password) => {
     try {
         const user = await db.users.findOne({
@@ -46,8 +54,9 @@ const handleLogin = async (email, password) => {
             const checkPassword = bcrypt.compareSync(password, user.password);
             if(checkPassword) {
                 delete user.password
-                const accessToken = jwt.sign({email}, process.env.JWT_SECRET, {expiresIn: '1m'})
-                return {user, accessToken}
+                const accessToken = createAccessToken(user.id)
+                const refreshToken = createRefreshToken(user.id)
+                return {user, accessToken, refreshToken}
             } else {
                 return {password: 'Password incorrect!'}
             }

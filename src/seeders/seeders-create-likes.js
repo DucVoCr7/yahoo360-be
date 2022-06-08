@@ -13,8 +13,8 @@ module.exports = {
             Array.from(new Array(nUsers)).forEach((element, key1) => {
                 Array.from(new Array(nPosts)).forEach((element, key2) => {
                     const like = {
-                        postId: key2,
-                        userId: key1,
+                        postId: key2 + 1,
+                        userId: key1 + 1,
                         createdAt: new Date(),
                         updatedAt: new Date()
                     }

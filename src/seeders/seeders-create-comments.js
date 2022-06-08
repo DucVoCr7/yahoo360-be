@@ -14,8 +14,8 @@ module.exports = {
             Array.from(new Array(nPosts)).forEach((element, key1) => {
                 Array.from(new Array(nComments)).forEach((element, key2) => {
                     const comment = {
-                        userId: faker.mersenne.rand(0, 9),
-                        postId: key1,
+                        userId: faker.mersenne.rand(1, 10),
+                        postId: key1 + 1,
                         content: faker.lorem.lines(),
                         createdAt: new Date(),
                         updatedAt: new Date()

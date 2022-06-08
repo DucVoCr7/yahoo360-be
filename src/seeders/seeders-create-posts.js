@@ -17,7 +17,7 @@ module.exports = {
             Array.from(new Array(nUsers)).forEach((element, key1) => {
                 Array.from(new Array(nPosts)).forEach((element, key2) => {
                     const post = {
-                        userId: key1,
+                        userId: key1 + 1,
                         image: faker.image.nightlife(600, 600), //
                         title: faker.name.jobTitle(), //
                         category: faker.helpers.arrayElement(['Life', 'Sport', 'Style', 'Tech', 'Music', 'Cinema', 'Travel', 'Food']),
