@@ -26,23 +26,29 @@ const getNewPostsCategory = async (category)=> {
         return newPostsCategory
     } catch (error) {return(error)}
 }
-
-const getPostById = async (id)=> {
+const getUserPage = async (id)=> {
     try {
-        const post = await db.posts.findOne({
+        const dataUser = await db.users.findOne({
             where: {id: id},
-            include: [{model: db.users, attributes: ['name']}]
+            attributes: {
+                exclude: ['password'] //Khong tra ra password
+            },
+            include: [
+                {model: db.posts}, 
+                {model: db.photos}, 
+                {model: db.musics}, 
+                {model: db.friends, attributes: ['friendId', 'status']} // Báo lỗi không include được
+            ]
         })
-        console.log(post)
-        if(post) {
-            return {post}
+        if(dataUser) {
+            return {dataUser}
         } else {
-            return {message: 'Post no exist!'}
+            return {message: 'User not found!'}
         }
     } catch (error) {return(error)}
 }
 module.exports = {
     getNewPosts: getNewPosts,
     getNewPostsCategory: getNewPostsCategory,
-    getPostById: getPostById
+    getUserPage: getUserPage
 }

@@ -5,7 +5,9 @@ import viewEngine from './config/viewEngine';
 import initWebRoutes from './routes/web';
 import checkConnectDatabase from './config/connectDatabase'
 import initAuthenticationRoutes from './routes/authentication';
-import initAPIRoutes from './routes/api';
+import initAPIPagesRoutes from './routes/apiPages';
+import initAPIPostsRoutes from './routes/apiPosts';
+import initRefreshTokenRoutes from './routes/refreshToken';
 
 const app = express()
 let port = process.env.PORT || 3000;
@@ -29,9 +31,14 @@ initWebRoutes(app)
 // Init authentication
 initAuthenticationRoutes(app)
 
-// Init API route
-initAPIRoutes(app)
+// Init APIHome route
+initAPIPagesRoutes(app)
 
+// Init APIPost route
+initAPIPostsRoutes(app)
+
+// Init refreshToken route
+initRefreshTokenRoutes(app)
 
 app.listen(port, () => {
   console.log(`Backend Yahoo360 is running on port ${port}`)

@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       users.hasMany(models.comments, {foreignKey:'userId'})
       users.hasMany(models.friends, {foreignKey:'userId'})
-      users.hasMany(models.friends, {foreignKey:'friendId'})
       users.hasMany(models.likes, {foreignKey:'userId'})
       users.hasMany(models.musics, {foreignKey:'userId'})
       users.hasMany(models.photos, {foreignKey:'userId'})

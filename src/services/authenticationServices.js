@@ -3,6 +3,23 @@ import db from '../models/index'
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 
+const createAccessToken = (userId)=> {
+    return jwt.sign({userId}, process.env.JWT_ACCESS_SECRET, {expiresIn: process.env.JWT_TIME_EXPIRE})
+}
+
+const createRefreshToken = (userId)=> {
+    return jwt.sign({userId}, process.env.JWT_REFRESH_SECRET)
+}
+
+const saveRefreshToken = async (userId, refreshToken)=> {
+    try {
+        await db.refreshTokens.create({
+            userId,
+            refreshToken
+        })
+    } catch (error) {return(error)}
+}
+
 const handleDataReqErr = (actionReq, dataReq)=> {
 
     const errors = {}
@@ -29,25 +46,15 @@ const handleDataReqErr = (actionReq, dataReq)=> {
     return errors
 }
 
-const hashPassword = async (password)=> {
-    try {
-        const hashPassword = await bcrypt.hashSync(password, bcrypt.genSaltSync(10))
-        return hashPassword
-    } catch (error) {return error}
-}
-
-const createAccessToken = (userId) => {
-    return jwt.sign({userId}, process.env.JWT_ACCESS_SECRET, {expiresIn: '1m'})
-}
-
-const createRefreshToken = (userId) => {
-    return jwt.sign({userId}, process.env.JWT_REFRESH_SECRET)
+const hashPassword = (password)=> {
+    const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+    return hashPassword
 }
 
 const handleLogin = async (email, password) => {
     try {
         const user = await db.users.findOne({
-            where: {email: email},
+            where: {email},
             raw: true // Để chỉ nhận value, không nhận mấy cái linh tinh vào biến user
         })
         if(user) {
@@ -56,33 +63,33 @@ const handleLogin = async (email, password) => {
                 delete user.password
                 const accessToken = createAccessToken(user.id)
                 const refreshToken = createRefreshToken(user.id)
+                await saveRefreshToken(user.id, refreshToken)
                 return {user, accessToken, refreshToken}
-            } else {
-                return {password: 'Password incorrect!'}
             }
-        } else {
-            return {email: 'Email not exits!'}
+            return {password: 'Password incorrect!'}
         }
+        return {email: 'Email is not registered!'}
     } catch (error) {return(error)}
 }
 
 const handleRegister = async (name, email, password) => {
     try {
         const checkEmail = await db.users.findOne({
-            where: {email: email}
+            where: {email}
         })
         if(checkEmail) {
-            return {email: 'Email is exits!'}
+            return {email: 'Email already exists!'}
         }
-        else {
-            const passwordHasHash = await hashPassword(password)
-            await db.users.create({
-                name: name,
-                email: email,
-                password: passwordHasHash
-            })
-            return {email: 'ok'}
-        }
+        const user = (await db.users.create({
+            name: name,
+            email: email,
+            password: hashPassword(password)
+        })).get({plain:true}) // Tương tự set raw: true để delete password
+        delete user.password
+        const accessToken = createAccessToken(user.id)
+        const refreshToken = createRefreshToken(user.id)
+        await saveRefreshToken(user.id, refreshToken)
+        return {user, accessToken, refreshToken}
     } catch (error) {return (error)}
 }
 
