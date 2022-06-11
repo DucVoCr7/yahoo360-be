@@ -4,7 +4,8 @@ const router = express.Router()
 
 const initAPIPagesRoutes = (app)=> {
     router.get('/homePage', apiPagesControllers.getHomePage)
-    router.get('/homeUser/:id', apiPagesControllers.getUserPage)
+    router.get('/userPage/:id', apiPagesControllers.getUserPage)
+    router.get('/postsPage', apiPagesControllers.getPostsPage)
     return app.use ('/api', router)
 }
 

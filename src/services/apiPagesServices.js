@@ -1,54 +1,102 @@
+import { decodeBase64 } from 'bcryptjs'
 import db from '../models/index'
 
-const getNewPosts = async ()=> {
+const getNewPosts = async () => {
     try {
         const newPosts = await db.posts.findAll({
             limit: 10,
             order: [
                 ['id', 'DESC']
             ],
-            include: [{model: db.users, attributes: ['name']}]
+            include: [{ model: db.users, attributes: ['name'] }]
         })
         return newPosts
-    } catch (error) {return(error)}
+    } catch (error) { return (error) }
 }
 
-const getNewPostsCategory = async (category)=> {
+const getNewPostsCategory = async (category) => {
     try {
         const newPostsCategory = await db.posts.findAll({
-            where: {category: category},
+            where: { category: category },
             limit: 5,
             order: [
                 ['id', 'DESC']
             ],
-            include: [{model: db.users, attributes: ['name']}]
+            include: [{ model: db.users, attributes: ['name'] }]
         })
         return newPostsCategory
-    } catch (error) {return(error)}
+    } catch (error) { return (error) }
 }
-const getUserPage = async (id)=> {
+const getUserPage = async (id) => {
     try {
         const dataUser = await db.users.findOne({
-            where: {id: id},
+            where: { id: id },
             attributes: {
                 exclude: ['password'] //Khong tra ra password
             },
             include: [
-                {model: db.posts}, 
-                {model: db.photos}, 
-                {model: db.musics}, 
-                {model: db.friends, attributes: ['friendId', 'status']} // Báo lỗi không include được
-            ]
+                { model: db.posts },
+                { model: db.photos },
+                { model: db.musics },
+                { model: db.friends,
+                    // where: {status: true},
+                    include: [
+                        {
+                            model: db.users,
+                            as: 'dataFriend',
+                            attributes: ['name', 'image']
+                        }
+                    ],
+                    attributes: ['friendId', 'status'],
+                },
+            ],
+            order: [
+            
+                [ db.friends, 'id', 'DESC' ], 
+              ]
         })
-        if(dataUser) {
-            return {dataUser}
-        } else {
-            return {message: 'User not found!'}
+        if (!dataUser) {
+            return {
+                errCode: 400,
+                errors: {
+                    message: 'User not found!'
+                }
+            }
         }
-    } catch (error) {return(error)}
+        // dataUser.friends.map(async (friend, key)=> {
+        //     const dataFriend = await db.users.findOne({
+        //         where: {id: friend.friendId},
+        //         attributes: ['name', 'image']
+        //     })
+        //     dataUser.friends[key].friendName = dataFriend.name
+        //     dataUser.friends[key].friendImage = dataFriend.image
+        // })
+        return { dataUser }
+    } catch (error) { return (error) }
+}
+const getPostsPage = async (category) => {
+    try {
+        const postsCategofy = await db.posts.findAll({
+            where: { category: category },
+            order: [
+                ['id', 'DESC']
+            ],
+            include: [{ model: db.users, attributes: ['name'] }]
+        })
+        if (postsCategofy.length === 0) {
+            return {
+                errCode: 400,
+                errors: {
+                    message: 'Page not found!'
+                }
+            }
+        }
+        return postsCategofy
+    } catch (error) { return (error) }
 }
 module.exports = {
     getNewPosts: getNewPosts,
     getNewPostsCategory: getNewPostsCategory,
-    getUserPage: getUserPage
+    getUserPage: getUserPage,
+    getPostsPage: getPostsPage
 }

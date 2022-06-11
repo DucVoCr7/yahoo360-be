@@ -1,24 +1,22 @@
 import authenticationServices from '../services/authenticationServices'
 
 const login = async (req, res) => {
-    const errors = authenticationServices.handleDataReqErr('login', req.body)
-    if (Object.keys(errors).length === 0) {
-        const data = await authenticationServices.handleLogin(req.body.email, req.body.password)
-        return res.status(200).json(data)
+    const data = await authenticationServices.login(req.body)
+    if (data.errCode) {
+        return res.status(data.errCode).json(data.errors)
     }
-    return res.status(400).json(errors)
+    return res.status(200).json(data)
 }
 
 const register = async (req, res) => {
-    const errors = authenticationServices.handleDataReqErr('register', req.body)
-    if (Object.keys(errors).length === 0) {
-        const data = await authenticationServices.handleRegister(req.body.name, req.body.email, req.body.password)
-        return res.status(200).json(data)
+    const data = await authenticationServices.register(req.body)
+    if (data.errCode) {
+        return res.status(data.errCode).json(data.errors)
     }
-    return res.status(400).json(errors)
+    return res.status(200).json(data)
 }
 
-module.exports =  {
+module.exports = {
     login: login,
     register: register
 }

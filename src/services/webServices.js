@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs"
 import db from '../models/index'
 
-const hashPassword = (password)=> {
-    return new Promise(async (resolve, reject)=> {
+const hashPassword = (password) => {
+    return new Promise(async (resolve, reject) => {
         try {
             const hashPassword = await bcrypt.hashSync(password, bcrypt.genSaltSync(10))
             resolve(hashPassword)
@@ -11,8 +11,8 @@ const hashPassword = (password)=> {
         }
     })
 }
-const getAllUsers = ()=> {
-    return new Promise(async (resolve, reject)=> {
+const getAllUsers = () => {
+    return new Promise(async (resolve, reject) => {
         try {
             const data = await db.users.findAll({
                 attributes: {
@@ -25,8 +25,8 @@ const getAllUsers = ()=> {
         }
     })
 }
-const createUser = (data)=> {
-    return new Promise(async (resolve, reject)=> {
+const createUser = (data) => {
+    return new Promise(async (resolve, reject) => {
         try {
             const passwordHasHash = await hashPassword(data.password)
             await db.users.create({
@@ -40,11 +40,11 @@ const createUser = (data)=> {
     })
 }
 
-const getInfoUserById = (id)=> {
-    return new Promise(async (resolve, reject)=> {
+const getInfoUserById = (id) => {
+    return new Promise(async (resolve, reject) => {
         try {
             const dataUser = await db.users.findOne({
-                where: {id: id},
+                where: { id: id },
                 attributes: {
                     exclude: ['password'] //Khong tra ra password
                 }
@@ -59,34 +59,34 @@ const getInfoUserById = (id)=> {
         }
     })
 }
-const updateUser = (data)=> {
-    return new Promise (async (resolve, reject)=> {
+const updateUser = (data) => {
+    return new Promise(async (resolve, reject) => {
         try {
             const dataUser = await db.users.findOne({
-                where: {id: data.id}
+                where: { id: data.id }
             })
             if (dataUser) {
                 dataUser.name = data.name,
-                dataUser.email = data.email,
-                dataUser.address = data.address,
-                dataUser.phoneNumber = data.phoneNumber
+                    dataUser.email = data.email,
+                    dataUser.address = data.address,
+                    dataUser.phoneNumber = data.phoneNumber
                 await dataUser.save();
                 resolve('Update data user success!')
             } else {
                 resolve('User not found!')
             }
-            
+
         } catch (error) {
             reject(error)
         }
     })
 }
-const deleteUser = (id)=> {
-    return new Promise (async (resolve, reject)=> {
+const deleteUser = (id) => {
+    return new Promise(async (resolve, reject) => {
         try {
             const dataUser = await db.users.findOne({
-                where: {id: id}
-            }) 
+                where: { id: id }
+            })
             if (dataUser) {
                 await dataUser.destroy();
                 resolve('Delete user success!')

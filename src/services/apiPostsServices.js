@@ -1,62 +1,100 @@
 import db from '../models/index'
 
-const createPost = async (data, userId)=> {
+const createPost = async (data, userIdToken) => {
     try {
+        if (data.userId != userIdToken) {
+            return {
+                errCode: 403,
+                errors: {
+                    message: 'Request not processed!'
+                }
+            }
+        }
         const newPost = await db.posts.create({
             likesNumber: 0,
-            userId: userId,
-            ...data
+            ...data,
+            userId: userIdToken
         })
-        return newPost
-    } catch (error) {return(error)}
-}
-const readPost = async (id)=> {
-    try {
-        const post = await db.posts.findOne({
-            where: {id: id},
-            include: [{model: db.users, attributes: ['name']}]
-        })
-        if(post) {
-            return {post}
-        } else {
-            return {message: 'Post does not exist!'}
+        return {
+            message: 'Create post success!',
+            post: newPost
         }
-    } catch (error) {return(error)}
+    } catch (error) { return (error) }
 }
-const updatePost = async (id, data, userId)=> {
+const readPost = async (id) => {
     try {
         const post = await db.posts.findOne({
-            where: {id: id}
+            where: { id: id },
+            include: [{ model: db.users, attributes: ['name'] }]
         })
-        if(post) {
-            if(post.userId === userId) {
-                const newPost = await post.update({...data})
-                return newPost
-            } else {
-                return {message: 'You cannot update this post!'}
+        if (!post) {
+            return {
+                errCode: 400,
+                errors: {
+                    message: 'Post does not exist!'
+                }
             }
-        } else {
-            return {message: 'Post does not exist!'}
         }
-    } catch (error) {return(error)}
+        return {
+            post
+        }
+    } catch (error) { return (error) }
+}
+const updatePost = async (id, data, userIdToken) => {
+    try {
+        const post = await db.posts.findOne({
+            where: { id: id }
+        })
+        if (!post) {
+            return {
+                errCode: 400,
+                errors: {
+                    message: 'Post does not exist!'
+                }
+            }
+        }
+        if (post.userId !== userIdToken) {
+            return {
+                errCode: 403,
+                errors: {
+                    message: 'Request not processed!'
+                }
+            }
+        }
+        const newPost = await post.update({ ...data })
+        return {
+            message: 'Update post success!',
+            post: newPost
+        }
+    } catch (error) { return (error) }
 }
 
-const deletePost = async (id, userId)=> {
+const deletePost = async (id, userIdToken) => {
     try {
         const post = await db.posts.findOne({
-            where: {id: id},
+            where: { id: id },
         })
-        if(post) {
-            if(post.userId === userId) {
-                await post.destroy();
-                return {message: 'Delete post success!'}
-            } else {
-                return {message: 'You cannot delete this post!'}
+        if (!post) {
+            return {
+                errCode: 400,
+                errors: {
+                    message: 'Request not processed!'
+                }
             }
-        } else {
-            return {message: 'Post does not exist!'}
         }
-    } catch (error) {return(error)}
+        if (post.userId !== userIdToken) {
+            return {
+                errCode: 403,
+                errors: {
+                    message: 'Request not processed!'
+                }
+            }
+        }
+        await post.destroy();
+        return {
+            message: 'Delete post success!'
+        }
+    } catch (error) { return (error) }
 }
 
 module.exports = {
