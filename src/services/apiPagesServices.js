@@ -38,8 +38,9 @@ const getUserPage = async (id) => {
                 { model: db.posts },
                 { model: db.photos },
                 { model: db.musics },
-                { model: db.friends,
-                    // where: {status: true},
+                {
+                    model: db.friends,
+                    where: { status: true },
                     include: [
                         {
                             model: db.users,
@@ -51,9 +52,8 @@ const getUserPage = async (id) => {
                 },
             ],
             order: [
-            
-                [ db.friends, 'id', 'DESC' ], 
-              ]
+                [db.friends, 'id', 'DESC']
+            ]
         })
         if (!dataUser) {
             return {
@@ -63,14 +63,6 @@ const getUserPage = async (id) => {
                 }
             }
         }
-        // dataUser.friends.map(async (friend, key)=> {
-        //     const dataFriend = await db.users.findOne({
-        //         where: {id: friend.friendId},
-        //         attributes: ['name', 'image']
-        //     })
-        //     dataUser.friends[key].friendName = dataFriend.name
-        //     dataUser.friends[key].friendImage = dataFriend.image
-        // })
         return { dataUser }
     } catch (error) { return (error) }
 }
@@ -94,9 +86,58 @@ const getPostsPage = async (category) => {
         return postsCategofy
     } catch (error) { return (error) }
 }
+const getUserHomePage = async (id, userIdToken) => {
+    try {
+        if (id !== userIdToken) {
+            return {
+                errCode: 403,
+                errors: {
+                    message: 'Token is not valid!'
+                }
+            }
+        }
+        const dataUser = await db.users.findOne({
+            where: { id: id },
+            attributes: {
+                exclude: ['password'] //Khong tra ra password
+            },
+            include: [
+                { model: db.posts },
+                { model: db.photos },
+                { model: db.musics },
+                {
+                    model: db.friends,
+                    where: { status: true },
+                    include: [
+                        {
+                            model: db.users,
+                            as: 'dataFriend',
+                            attributes: ['name', 'image']
+                        }
+                    ],
+                    attributes: ['friendId', 'status'],
+                },
+            ],
+            order: [
+
+                [db.friends, 'id', 'DESC'],
+            ]
+        })
+        if (!dataUser) {
+            return {
+                errCode: 400,
+                errors: {
+                    message: 'User not found!'
+                }
+            }
+        }
+        return { dataUser }
+    } catch (error) { return (error) }
+}
 module.exports = {
     getNewPosts: getNewPosts,
     getNewPostsCategory: getNewPostsCategory,
     getUserPage: getUserPage,
-    getPostsPage: getPostsPage
+    getPostsPage: getPostsPage,
+    getUserHomePage: getUserHomePage
 }

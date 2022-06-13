@@ -8,6 +8,12 @@ import initAuthenticationRoutes from './routes/authentication';
 import initAPIPagesRoutes from './routes/apiPages';
 import initAPIPostsRoutes from './routes/apiPosts';
 import initRefreshTokenRoutes from './routes/refreshToken';
+import initAPIPhotosRoutes from './routes/apiPhotos';
+import initAPIMusicsRoutes from './routes/apiMusics';
+import initAPICommentsRoutes from './routes/apiComments';
+import initAPIRepliesRoutes from './routes/apiReplies';
+import initAPILikesRoutes from './routes/apiLikes';
+import initAPIFriendsRoutes from './routes/apiFriends';
 
 const app = express()
 let port = process.env.PORT || 3000;
@@ -28,17 +34,35 @@ viewEngine(app);
 // Init web route
 initWebRoutes(app)
 
+// Init refreshToken route
+initRefreshTokenRoutes(app)
+
 // Init authentication
 initAuthenticationRoutes(app)
 
-// Init APIHome route
+// Init APIPages route
 initAPIPagesRoutes(app)
 
-// Init APIPost route
+// Init APIPosts route
 initAPIPostsRoutes(app)
 
-// Init refreshToken route
-initRefreshTokenRoutes(app)
+// Init APIPhotos route
+initAPIPhotosRoutes(app)
+
+// Init APIMusics route
+initAPIMusicsRoutes(app)
+
+// Init APIComments route
+initAPICommentsRoutes(app)
+
+// Init APIReplies route
+initAPIRepliesRoutes(app)
+
+// Init APILikes route
+initAPILikesRoutes(app)
+
+// Init APIFriends route
+initAPIFriendsRoutes(app)
 
 app.listen(port, () => {
   console.log(`Backend Yahoo360 is running on port ${port}`)

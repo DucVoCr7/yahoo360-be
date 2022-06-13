@@ -38,8 +38,16 @@ const getPostsPage = async (req, res)=> {
     }
     return res.status(200).json(data)
 }
+const getUserHomePage = async (req, res)=> {
+    const data = await apiPagesServices.getUserHomePage(req.params.id, req.dataToken)
+    if (data.errCode) {
+        return res.status(data.errCode).json(data.errors)
+    }
+    return res.status(200).json(data)
+}
 module.exports = {
     getHomePage: getHomePage,
     getUserPage: getUserPage,
-    getPostsPage: getPostsPage
+    getPostsPage: getPostsPage,
+    getUserHomePage: getUserHomePage
 }
