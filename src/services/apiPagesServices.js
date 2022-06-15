@@ -1,4 +1,3 @@
-import { decodeBase64 } from 'bcryptjs'
 import db from '../models/index'
 
 const getNewPosts = async () => {

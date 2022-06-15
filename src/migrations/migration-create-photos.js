@@ -4,6 +4,7 @@ module.exports = {
     await queryInterface.createTable('photos', {
       // userId: DataTypes.INTEGER,
       // photo: DataTypes.STRING
+      // cloudinary_id: DataTypes.STRING,
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -14,6 +15,9 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       photo: {
+        type: Sequelize.STRING
+      },
+      cloudinary_id: {
         type: Sequelize.STRING
       },
       createdAt: {

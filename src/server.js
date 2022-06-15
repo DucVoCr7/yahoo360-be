@@ -21,9 +21,10 @@ let port = process.env.PORT || 3000;
  // Enable All CORS Requests
 app.use(cors())
 
-// Cấu hình Express gửi POST request, hỗ trợ lấy tham số trên URL
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}));
 
 // Check connect with database
 checkConnectDatabase();

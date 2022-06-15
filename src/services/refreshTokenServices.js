@@ -1,23 +1,7 @@
 import db from '../models/index'
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
-
-const createAccessToken = (userId) => {
-    return jwt.sign({ userId }, process.env.JWT_ACCESS_SECRET, { expiresIn: process.env.JWT_TIME_EXPIRE })
-}
-
-const createRefreshToken = (userId) => {
-    return jwt.sign({ userId }, process.env.JWT_REFRESH_SECRET)
-}
-
-const saveRefreshToken = async (userId, refreshToken) => {
-    try {
-        await db.refreshTokens.create({
-            userId,
-            refreshToken
-        })
-    } catch (error) { return (error) }
-}
+import { createAccessToken, createRefreshToken, saveRefreshToken } from '../utils/JWTAction'
 
 const refreshToken = async (refreshToken) => {
     try {
@@ -48,6 +32,8 @@ const refreshToken = async (refreshToken) => {
         return newToken
     } catch (error) { return (error) }
 }
+
+// LogOut delete all refreshToken
 const deleteRefreshToken = async (refreshToken)=> {
     try {
         const data = await db.refreshTokens.findOne({

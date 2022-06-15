@@ -1,7 +1,7 @@
 import apiPostsServices from '../services/apiPostsServices'
 
 const createPost = async (req, res) => {
-    const data = await apiPostsServices.createPost(req.body, req.userIdToken)
+    const data = await apiPostsServices.createPost(req.body, req.userIdToken, req.files.image.filepath)
     if (data.errCode) {
         return res.status(data.errCode).json(data.errors)
     }
@@ -15,7 +15,7 @@ const readPost = async (req, res) => {
     return res.status(200).json(data)
 }
 const updatePost = async (req, res) => {
-    const data = await apiPostsServices.updatePost(req.params.id, req.body, req.userIdToken)
+    const data = await apiPostsServices.updatePost(req.params.id, req.body, req.userIdToken, req.files.image?.filepath)
     if (data.errCode) {
         return res.status(data.errCode).json(data.errors)
     }

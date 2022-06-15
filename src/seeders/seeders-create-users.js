@@ -33,6 +33,7 @@ module.exports = {
           phoneNumber: faker.phone.phoneNumber('09########'), //
           address: faker.address.cityName(), //
           position: 'Newbie',
+          cloudinary_id: null,
           createdAt: new Date(),
           updatedAt: new Date()
         }

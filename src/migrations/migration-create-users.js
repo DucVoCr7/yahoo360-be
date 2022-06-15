@@ -11,6 +11,7 @@ module.exports = {
       // phoneNumber: DataTypes.STRING,
       // address: DataTypes.STRING,
       // position: DataTypes.STRING
+      // cloudinary_id: DataTypes.STRING,
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -42,6 +43,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       position: {
+        type: Sequelize.STRING
+      },
+      cloudinary_id: {
         type: Sequelize.STRING
       },
       createdAt: {

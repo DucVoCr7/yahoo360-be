@@ -23,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.TEXT,
     category: DataTypes.STRING,
     content: DataTypes.TEXT,
-    likesNumber: DataTypes.INTEGER
+    likesNumber: DataTypes.INTEGER,
+    cloudinary_id: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'posts',

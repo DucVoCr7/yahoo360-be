@@ -1,7 +1,7 @@
 import apiPhotosServices from '../services/apiPhotosServices'
 
 const createPhoto = async (req, res) => {
-    const data = await apiPhotosServices.createPhoto(req.body, req.userIdToken)
+    const data = await apiPhotosServices.createPhoto(req.body, req.userIdToken, req.files.photo.filepath)
     if (data.errCode) {
         return res.status(data.errCode).json(data.errors)
     }

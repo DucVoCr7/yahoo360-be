@@ -1,7 +1,7 @@
 import db from '../models/index'
 const cloudinary = require('../utils/cloudinary')
 
-const createPost = async (data, userIdToken, path) => {
+const readAllUser = async (data, userIdToken, path) => {
     try {
         if (data.userId != userIdToken) {
             return {
@@ -24,7 +24,7 @@ const createPost = async (data, userIdToken, path) => {
         }
     } catch (error) { return (error) }
 }
-const readPost = async (id) => {
+const readUser = async (id) => {
     try {
         const post = await db.posts.findOne({
             where: { id: id },
@@ -68,7 +68,7 @@ const readPost = async (id) => {
         }
     } catch (error) { return (error) }
 }
-const updatePost = async (id, data, userIdToken, path) => {
+const updateUser = async (id, data, userIdToken, path) => {
     try {
         const post = await db.posts.findOne({
             where: { id: id }
@@ -105,21 +105,31 @@ const updatePost = async (id, data, userIdToken, path) => {
     } catch (error) { return (error) }
 }
 
-const deletePost = async (id, userIdToken) => {
+const deleteUser = async (id, userIdToken) => {
     try {
-        const post = await db.posts.findOne({
+        const user = await db.users.findOne({
             where: { id: id },
-            include: [{model: db.comments, attributes: ['id']}]
+            include: [
+                {model: db.posts, attributes: ['id', 'cloudinary_id']},
+                {model: db.comments, attributes: ['id']},
+                {model: db.replies, attributes: ['id']},
+                {model: db.photos, attributes: ['id', 'cloudinary_id']},
+                {model: db.musics, attributes: ['id']},
+                {model: db.friends, attributes: ['id']}
+            ]
         })
-        if (!post) {
+        const admin = await db.users.findOne({
+            where: {id: userIdToken}
+        })
+        if (!user) {
             return {
                 errCode: 400,
                 errors: {
-                    message: 'Post does not exist!'
+                    message: 'User does not exist!'
                 }
             }
         }
-        if (post.userId !== userIdToken) {
+        if (!admin || admin.role !== 'R0') {
             return {
                 errCode: 403,
                 errors: {
@@ -143,8 +153,8 @@ const deletePost = async (id, userIdToken) => {
 }
 
 module.exports = {
-    createPost: createPost,
-    readPost: readPost,
-    updatePost: updatePost,
-    deletePost: deletePost
+    readAllUser: readAllUser,
+    readUser: readUser,
+    updateUser: updateUser,
+    deleteUser: deleteUser
 }

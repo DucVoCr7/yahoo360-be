@@ -1,6 +1,7 @@
 import db from '../models/index'
+const cloudinary = require('../utils/cloudinary')
 
-const createPhoto = async (data, userIdToken) => {
+const createPhoto = async (data, userIdToken, path) => {
     try {
         if (data.userId != userIdToken) {
             return {
@@ -10,8 +11,11 @@ const createPhoto = async (data, userIdToken) => {
                 }
             }
         }
+        const resultPhoto = await cloudinary.uploader.upload(path)
         const newPhoto = await db.photos.create({
             ...data,
+            photo: resultPhoto.secure_url,
+            cloudinary_id: resultPhoto.public_id
         })
         return {
             message: 'Add photo success!',
@@ -41,7 +45,8 @@ const deletePhoto = async (id, userIdToken) => {
                 }
             }
         }
-        await photo.destroy();
+        const photoHasDelete = await photo.destroy();
+        await cloudinary.uploader.destroy(photoHasDelete.cloudinary_id)
         return {
             message: 'Delete photo success!'
         }

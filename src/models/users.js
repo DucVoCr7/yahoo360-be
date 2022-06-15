@@ -30,7 +30,8 @@ module.exports = (sequelize, DataTypes) => {
     gender: DataTypes.BOOLEAN,
     phoneNumber: DataTypes.STRING,
     address: DataTypes.STRING,
-    position: DataTypes.STRING
+    position: DataTypes.STRING,
+    cloudinary_id: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'users',

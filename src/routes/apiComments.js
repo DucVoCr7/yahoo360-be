@@ -1,6 +1,7 @@
 import express from "express";
 import apiCommentsControllers from '../controllers/apiCommentsControllers'
 import verifyToken from "../middlewares/verifyToken";
+
 const router = express.Router()
 
 const initAPICommentsRoutes = (app)=> {

@@ -8,6 +8,7 @@ module.exports = {
       // category: DataTypes.STRING,
       // content: DataTypes.TEXT,
       // likesNumber: DataTypes.INTEGER
+      // cloudinary_id: DataTypes.STRING,
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -31,6 +32,9 @@ module.exports = {
       },
       likesNumber: {
         type: Sequelize.INTEGER
+      },
+      cloudinary_id: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
