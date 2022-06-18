@@ -1,5 +1,35 @@
 import db from '../models/index'
 
+const readLikesOfPost = async (postId) => {
+    try {
+        const post = await db.posts.findOne({
+            where: {id: postId}
+        })
+        if(!post) {
+            return {
+                errCode: 400,
+                errors: {
+                    message: 'Post does not exist!'
+                }
+            }
+        }
+        const dataLikesOfPost = await db.Likes.findAll({
+            where: {postId: postId},
+            include: [
+                {
+                    model: db.users,
+                    attributes: ['id', 'name', 'image']
+                }
+            ],
+            order: [
+                ['id', 'DESC']
+            ]
+        })
+        return {
+            dataLikesOfPost
+        }
+    } catch (error) { return (error) }
+}
 const actionLike = async (data, userIdToken) => {
     try {
         if (data.userId != userIdToken) {
@@ -53,5 +83,6 @@ const actionLike = async (data, userIdToken) => {
 }
 
 module.exports = {
+    readLikesOfPost: readLikesOfPost,
     actionLike: actionLike
 }

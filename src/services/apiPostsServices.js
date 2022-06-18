@@ -1,6 +1,30 @@
 import db from '../models/index'
 const cloudinary = require('../utils/cloudinary')
 
+const readPostsOfUser = async (userId) => {
+    try {
+        const user = await db.users.findOne({
+            where: {id: userId}
+        })
+        if(!user) {
+            return {
+                errCode: 400,
+                errors: {
+                    message: 'User does not exist!'
+                }
+            }
+        }
+        const dataPostsOfUser = await db.posts.findAll({
+            where: {userId: userId},
+            order: [
+                ['id', 'DESC']
+            ]
+        })
+        return {
+            dataPostsOfUser
+        }
+    } catch (error) { return (error) }
+}
 const createPost = async (data, userIdToken, path) => {
     try {
         if (data.userId != userIdToken) {
@@ -90,7 +114,6 @@ const updatePost = async (id, data, userIdToken, path) => {
             }
         }
         // Co path thi xoa image cu. Gan image new vao
-        console.log(path)
         if (path) {
             await cloudinary.uploader.destroy(post.cloudinary_id)
             const resultImage = await cloudinary.uploader.upload(path);
@@ -127,15 +150,23 @@ const deletePost = async (id, userIdToken) => {
                 }
             }
         }
-        const postHasDelete = await post.destroy();
-        // Delete image on cloudiany
-        await cloudinary.uploader.destroy(postHasDelete.cloudinary_id)
-        // Delete Comments
-        await db.comments.destroy({where:{postId: postHasDelete.id}})
+
         // Delete Replies Comments
-        postHasDelete.comments.forEach(async (comment)=> 
+        post.comments.forEach(async (comment)=> 
             await db.replies.destroy({where: {commentId: comment.id}})
         )
+        // Delete Comments 
+        await db.comments.destroy({where:{postId: post.id}})
+        // Delete Likes
+        await db.likes.destroy({where:{postId: post.id}})
+        // Delete image on cloudiany
+        if (post.cloudinary_id) {
+            await cloudinary.uploader.destroy(post.cloudinary_id)
+        }
+        // await cloudinary.uploader.destroy(post.cloudinary_id)
+        // Delete post
+        await post.destroy();
+
         return {
             message: 'Delete post success!'
         }
@@ -143,6 +174,7 @@ const deletePost = async (id, userIdToken) => {
 }
 
 module.exports = {
+    readPostsOfUser: readPostsOfUser,
     createPost: createPost,
     readPost: readPost,
     updatePost: updatePost,

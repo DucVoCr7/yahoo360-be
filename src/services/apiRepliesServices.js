@@ -1,5 +1,35 @@
 import db from '../models/index'
 
+const readRepliesOfComment = async (commentId) => {
+    try {
+        const comment = await db.comments.findOne({
+            where: {id: commentId}
+        })
+        if(!comment) {
+            return {
+                errCode: 400,
+                errors: {
+                    message: 'Comment does not exist!'
+                }
+            }
+        }
+        const dataRepliesOfComment = await db.replies.findAll({
+            where: {commentId: commentId},
+            include: [
+                {
+                    model: db.users,
+                    attributes: ['id', 'name', 'image']
+                },
+            ],
+            order: [
+                ['id', 'DESC']
+            ]
+        })
+        return {
+            dataRepliesOfComment
+        }
+    } catch (error) { return (error) }
+}
 const createReply = async (data, userIdToken) => {
     try {
         if (data.userId != userIdToken) {
@@ -76,6 +106,7 @@ const deleteReply = async (id, userIdToken) => {
 }
 
 module.exports = {
+    readRepliesOfComment: readRepliesOfComment,
     createReply: createReply,
     updateReply: updateReply, 
     deleteReply: deleteReply

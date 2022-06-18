@@ -15,3 +15,7 @@
 - Sequelize/ sequelize-cli dùng để thao tác với mysql bằng code.
     + yarn sequelize-cli init: tạo ra file config.json, thư mục migrations, models, seeders
     + Các lệnh để thao tác với mysql trong nodejs tham khảo tại sequelize.org
+
+
+- Ask:
+    + Xóa nhiều dòng từ nhiều bảng liên quan nhau nhanh gọn, không phải đi xóa từng cái ???

@@ -1,5 +1,51 @@
 import db from '../models/index'
 
+const readFriendsOfUser = async (userId) => {
+    try {
+        const user = await db.users.findOne({
+            where: {id: userId}
+        })
+        if(!user) {
+            return {
+                errCode: 400,
+                errors: {
+                    message: 'User does not exist!'
+                }
+            }
+        }
+        const dataFriendsOfUser = await db.friends.findAll({
+            where: {userId: userId, status: true},
+            include: [
+                {
+                    model: db.users,
+                    as: 'dataFriend',
+                    attributes: ['id', 'name', 'image']
+                }
+            ],
+            order: [
+                ['id', 'DESC']
+            ]
+        })
+        const dataFriendsRequestOfUser = await db.friends.findAll({
+            where: {friendId: userId, status: false},
+            include: [
+                {
+                    model: db.users,
+                    as: 'dataFriendRequest',
+                    attributes: ['id', 'name', 'image']
+                }
+            ],
+            order: [
+                ['id', 'DESC']
+            ]
+        })
+        return {
+            dataFriendsOfUser,
+            dataFriendsRequestOfUser
+        }
+    } catch (error) { return (error) }
+}
+
 const requestFriend = async (data, userIdToken) => {
     try {
         if (data.userId != userIdToken) {
@@ -107,21 +153,24 @@ const deleteFriend = async (id, userIdToken) => {
                 }
             }
         }
-        const friendHasDelete = await dataFriend.destroy();
-        console.log(friendHasDelete)
+
         // Xóa dữ liệu ở người bạn
         await db.friends.destroy({
             where: {
-                userId: friendHasDelete.friendId,
-                friendId: friendHasDelete.userId
+                userId: dataFriend.friendId,
+                friendId: dataFriend.userId
             }
         })
+        // Xóa dữ liệu ở chính mình
+        await dataFriend.destroy();
+
         return {
             message: 'Remove friend success!'
         }
     } catch (error) { return (error) }
 }
 module.exports = {
+    readFriendsOfUser: readFriendsOfUser,
     requestFriend: requestFriend,
     acceptFriend: acceptFriend,
     refuseFriend: refuseFriend,

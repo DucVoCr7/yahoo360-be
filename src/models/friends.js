@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       //   foreignKey: 'subscriberId'
       // });
       friends.belongsTo(models.users, {as: 'dataFriend', foreignKey:'friendId'})
-      friends.belongsTo(models.users, {foreignKey:'userId'})
+      friends.belongsTo(models.users, {as: 'dataFriendRequest', foreignKey:'userId'})
     }
   }
   friends.init({

@@ -1,5 +1,30 @@
 import db from '../models/index'
 
+const readMusicsOfUser = async (userId) => {
+    try {
+        const user = await db.users.findOne({
+            where: {id: userId}
+        })
+        if(!user) {
+            return {
+                errCode: 400,
+                errors: {
+                    message: 'User does not exist!'
+                }
+            }
+        }
+        const dataMusicsOfUser = await db.musics.findAll({
+            where: {userId: userId},
+            order: [
+                ['id', 'DESC']
+            ]
+        })
+        return {
+            dataMusicsOfUser
+        }
+    } catch (error) { return (error) }
+}
+
 const createMusic = async (data, userIdToken) => {
     try {
         if (data.userId != userIdToken) {
@@ -49,6 +74,7 @@ const deleteMusic = async (id, userIdToken) => {
 }
 
 module.exports = {
+    readMusicsOfUser: readMusicsOfUser,
     createMusic: createMusic,
     deleteMusic: deleteMusic
 }

@@ -1,6 +1,30 @@
 import db from '../models/index'
 const cloudinary = require('../utils/cloudinary')
 
+const readPhotosOfUser = async (userId) => {
+    try {
+        const user = await db.users.findOne({
+            where: {id: userId}
+        })
+        if(!user) {
+            return {
+                errCode: 400,
+                errors: {
+                    message: 'User does not exist!'
+                }
+            }
+        }
+        const dataPhotosOfUser = await db.photos.findAll({
+            where: {userId: userId},
+            order: [
+                ['id', 'DESC']
+            ]
+        })
+        return {
+            dataPhotosOfUser
+        }
+    } catch (error) { return (error) }
+}
 const createPhoto = async (data, userIdToken, path) => {
     try {
         if (data.userId != userIdToken) {
@@ -45,8 +69,12 @@ const deletePhoto = async (id, userIdToken) => {
                 }
             }
         }
-        const photoHasDelete = await photo.destroy();
-        await cloudinary.uploader.destroy(photoHasDelete.cloudinary_id)
+        if (photo.cloudinary_id) {
+            await cloudinary.uploader.destroy(photo.cloudinary_id)
+        }
+        // await cloudinary.uploader.destroy(photo.cloudinary_id)
+        await photo.destroy();
+        
         return {
             message: 'Delete photo success!'
         }
@@ -54,6 +82,7 @@ const deletePhoto = async (id, userIdToken) => {
 }
 
 module.exports = {
+    readPhotosOfUser: readPhotosOfUser,
     createPhoto: createPhoto,
     deletePhoto: deletePhoto
 }

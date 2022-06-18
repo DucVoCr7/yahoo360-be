@@ -1,5 +1,12 @@
 import apiRepliesServices from '../services/apiRepliesServices'
 
+const readRepliesOfComment = async (req, res) => {
+    const data = await apiRepliesServices.readRepliesOfComment(req.query.commentId)
+    if (data.errCode) {
+        return res.status(data.errCode).json(data.errors)
+    }
+    return res.status(200).json(data)
+}
 const createReply = async (req, res) => {
     const data = await apiRepliesServices.createReply(req.body, req.userIdToken)
     if (data.errCode) {
@@ -25,7 +32,8 @@ const deleteReply = async (req, res) => {
 }
 
 module.exports = {
+    readRepliesOfComment: readRepliesOfComment,
     createReply: createReply,
-    updateReply: updateReply,
+    updateReply: updateReply, 
     deleteReply: deleteReply
 }

@@ -4,11 +4,10 @@ import verifyToken from "../middlewares/verifyToken";
 const router = express.Router()
 
 const initAPIPagesRoutes = (app)=> {
-    router.get('/homePage', apiPagesControllers.getHomePage)
-    router.get('/userPage/:id', apiPagesControllers.getUserPage)
-    router.get('/postsPage', apiPagesControllers.getPostsPage)
-    router.get('/userHomePage', verifyToken, apiPagesControllers.getUserHomePage)
-    router.get('/')
+    router.get('/postsGroupPage', apiPagesControllers.postsGroupPage)
+    router.get('/homePage', apiPagesControllers.homePage)
+    router.get('/userPage/:id', apiPagesControllers.userPage)
+    router.get('/homeUserPage/:id', verifyToken, apiPagesControllers.homeUserPage)
     return app.use ('/api', router)
 }
 

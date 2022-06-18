@@ -1,5 +1,13 @@
 import apiCommentsServices from '../services/apiCommentsServices'
 
+const readCommentsOfPost = async (req, res) => {
+    const data = await apiCommentsServices.readCommentsOfPost(req.query.postId)
+    if (data.errCode) {
+        return res.status(data.errCode).json(data.errors)
+    }
+    return res.status(200).json(data)
+}
+
 const createComment = async (req, res) => {
     const data = await apiCommentsServices.createComment(req.body, req.userIdToken)
     if (data.errCode) {
@@ -25,6 +33,7 @@ const deleteComment = async (req, res) => {
 }
 
 module.exports = {
+    readCommentsOfPost: readCommentsOfPost,
     createComment: createComment,
     updateComment: updateComment,
     deleteComment: deleteComment

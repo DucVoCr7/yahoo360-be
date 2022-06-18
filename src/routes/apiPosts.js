@@ -6,6 +6,7 @@ import verifyToken from "../middlewares/verifyToken";
 const router = express.Router()
 
 const initAPIPostsRoutes = (app)=> {
+    router.get('/', apiPostsControllers.readPostsOfUser)
     router.post('/', verifyToken, uploadFile, apiPostsControllers.createPost)
     router.get('/:id', apiPostsControllers.readPost)
     router.patch('/:id', verifyToken, uploadFile, apiPostsControllers.updatePost)

@@ -1,5 +1,44 @@
 import db from '../models/index'
 
+const readCommentsOfPost = async (postId) => {
+    try {
+        const post = await db.posts.findOne({
+            where: {id: postId}
+        })
+        if(!post) {
+            return {
+                errCode: 400,
+                errors: {
+                    message: 'Post does not exist!'
+                }
+            }
+        }
+        const dataCommentsOfPost = await db.comments.findAll({
+            where: {postId: postId},
+            include: [
+                {
+                    model: db.users,
+                    attributes: ['id', 'name', 'image']
+                },
+                {
+                    model: db.replies,
+                    include: [
+                        {
+                            model: db.users,
+                            attributes: ['id', 'name', 'image']
+                        }
+                    ]
+                }
+            ],
+            order: [
+                [db.replies, 'id', 'DESC']
+            ]
+        })
+        return {
+            dataCommentsOfPost
+        }
+    } catch (error) { return (error) }
+}
 const createComment = async (data, userIdToken) => {
     try {
         if (data.userId != userIdToken) {
@@ -68,8 +107,12 @@ const deleteComment = async (id, userIdToken) => {
                 }
             }
         }
-        const commentHasDelete = await comment.destroy(); // Delete Comment
-        await db.replies.destroy({where: {commentId: commentHasDelete.id}}) // Delete Replies
+
+        // Delete Replies
+        await db.replies.destroy({where: {commentId: comment.id}})
+        // Delete Comment
+        await comment.destroy(); 
+
         return {
             message: 'Delete comment success!'
         }
@@ -77,6 +120,7 @@ const deleteComment = async (id, userIdToken) => {
 }
 
 module.exports = {
+    readCommentsOfPost: readCommentsOfPost,
     createComment: createComment,
     updateComment: updateComment,
     deleteComment: deleteComment
