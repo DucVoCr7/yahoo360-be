@@ -14,7 +14,7 @@ module.exports = {
                 Array.from(new Array(nPhotos)).forEach((element, key2) => {
                     const photo = {
                         userId: key1 + 1,
-                        photo: faker.image.animals(600, 600), //
+                        photo: faker.image.image(1280, 720).replace('http://', 'https://'), //
                         createdAt: new Date(),
                         updatedAt: new Date()
                     }
