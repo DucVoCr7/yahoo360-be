@@ -53,7 +53,7 @@ const readPost = async (id) => {
         const post = await db.posts.findOne({
             where: { id: id },
             include: [
-                { model: db.users, attributes: ['name'] },
+                { model: db.users, attributes: ['name', 'image'] },
                 {
                     model: db.comments,
                     attributes: { exclude: ['postsId'] },

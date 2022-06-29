@@ -6,7 +6,7 @@ const initAuthenticationRoutes = (app)=> {
     // router.get('/', Hàm từ controllers)
     router.post('/login', authenticationControllers.login)
     router.post('/register', authenticationControllers.register)
-    return app.use ('/', router)
+    return app.use ('/api', router)
 }
 
 export default initAuthenticationRoutes;

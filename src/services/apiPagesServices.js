@@ -26,7 +26,7 @@ const getNewPostsCategory = async (category) => {
         return newPostsCategory
     } catch (error) { return (error) }
 }
-const postsGroupPage = async (category)=> {
+const postsPage = async (category)=> {
     try {
         const dataPosts = await db.posts.findAll({
             where: {category: category},
@@ -48,7 +48,7 @@ const postsGroupPage = async (category)=> {
         }
     } catch (error) { return (error) }
 }
-const homePage = async () => {
+const communityPage = async () => {
     try {
         // ['Life', 'Sport', 'Style', 'Tech', 'Music', 'Cinema', 'Travel', 'Food']
         const newPosts = await getNewPosts()
@@ -153,7 +153,7 @@ const userPage = async (id) => {
         return { dataUser }
     } catch (error) { return (error) }
 }
-const homeUserPage = async (id, userIdToken) => {
+const homePage = async (id, userIdToken) => {
     try {
         if (id != userIdToken) {
             return {
@@ -255,8 +255,8 @@ const homeUserPage = async (id, userIdToken) => {
     } catch (error) { return (error) }
 }
 module.exports = {
-    postsGroupPage: postsGroupPage,
-    homePage: homePage,
+    postsPage: postsPage,
+    communityPage: communityPage,
     userPage: userPage,
-    homeUserPage: homeUserPage
+    homePage: homePage
 }

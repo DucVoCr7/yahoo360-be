@@ -1,14 +1,14 @@
 import apiPagesServices from '../services/apiPagesServices'
 
-const postsGroupPage = async (req, res) => {
-    const data = await apiPagesServices.postsGroupPage(req.query.category)
+const postsPage = async (req, res) => {
+    const data = await apiPagesServices.postsPage(req.query.category)
     if (data.errCode) {
         return res.status(data.errCode).json(data.errors)
     }
     return res.status(200).json(data)
 }
-const homePage = async (req, res) => {
-    const data = await apiPagesServices.homePage()
+const communityPage = async (req, res) => {
+    const data = await apiPagesServices.communityPage()
     return res.status(200).json(data)
 }
 const userPage = async (req, res) => {
@@ -18,16 +18,16 @@ const userPage = async (req, res) => {
     }
     return res.status(200).json(data)
 }
-const homeUserPage = async (req, res)=> {
-    const data = await apiPagesServices.homeUserPage(req.params.id, req.userIdToken)
+const homePage = async (req, res)=> {
+    const data = await apiPagesServices.homePage(req.params.id, req.userIdToken)
     if (data.errCode) {
         return res.status(data.errCode).json(data.errors)
     }
     return res.status(200).json(data)
 }
 module.exports = {
-    postsGroupPage: postsGroupPage,
-    homePage: homePage,
+    postsPage: postsPage,
+    communityPage: communityPage,
     userPage: userPage,
-    homeUserPage: homeUserPage
+    homePage: homePage
 }
