@@ -23,7 +23,7 @@ const handleDataInput = (actionReq, dataReq) => {
     if (!dataReq.password?.trim()) {
         errors.password = 'Enter your password!'
     } else if (dataReq.password.length < 6) {
-        errors.password = 'Enter at least 6 characters!'
+        errors.password = 'At least 6 characters!'
     }
 
     return errors
@@ -53,7 +53,7 @@ const login = async (data) => {
             return {
                 errCode: 401,
                 errors: {
-                    email: 'Email is not registered!'
+                    email: `Email isn't registered!`
                 }
             }
         }

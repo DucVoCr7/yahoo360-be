@@ -21,7 +21,6 @@ const getNewPostsCategory = async (category) => {
             order: [
                 ['id', 'DESC']
             ],
-            include: [{ model: db.users, attributes: ['id', 'name', 'image'] }]
         })
         return newPostsCategory
     } catch (error) { return (error) }
@@ -85,31 +84,7 @@ const userPage = async (id) => {
                     model: db.posts,
                     include: [
                         {
-                            model: db.likes,
-                            include: [
-                                {
-                                    model: db.users,
-                                    attributes: ['id', 'name', 'image']
-                                }
-                            ]
-                        },
-                        {
                             model: db.comments,
-                            include: [
-                                {
-                                    model: db.users,
-                                    attributes: ['id', 'name', 'image']
-                                },
-                                {
-                                    model: db.replies,
-                                    include: [
-                                        {
-                                            model: db.users,
-                                            attributes: ['id', 'name', 'image']
-                                        }
-                                    ]
-                                }
-                            ]
                         }
                     ]
                 },
@@ -134,8 +109,7 @@ const userPage = async (id) => {
                 },
             ],
             order: [
-                [db.posts, db.comments, db.replies, 'id', 'DESC'],
-                [db.posts, db.likes, 'id', 'DESC'],
+                [db.posts, db.comments, 'id', 'DESC'],
                 [db.photos, 'id', 'DESC'],
                 [db.musics, 'id', 'DESC'],
                 [{model: db.friends, as: 'friend'}, 'id', 'DESC'],
@@ -173,31 +147,7 @@ const homePage = async (id, userIdToken) => {
                     model: db.posts,
                     include: [
                         {
-                            model: db.likes,
-                            include: [
-                                {
-                                    model: db.users,
-                                    attributes: ['id', 'name', 'image']
-                                }
-                            ]
-                        },
-                        {
                             model: db.comments,
-                            include: [
-                                {
-                                    model: db.users,
-                                    attributes: ['id', 'name', 'image']
-                                },
-                                {
-                                    model: db.replies,
-                                    include: [
-                                        {
-                                            model: db.users,
-                                            attributes: ['id', 'name', 'image']
-                                        }
-                                    ]
-                                }
-                            ]
                         }
                     ]
                 },
@@ -235,8 +185,7 @@ const homePage = async (id, userIdToken) => {
                 }
             ],
             order: [
-                [db.posts, db.comments, db.replies, 'id', 'DESC'],
-                [db.posts, db.likes, 'id', 'DESC'],
+                [db.posts, db.comments, 'id', 'DESC'],
                 [db.photos, 'id', 'DESC'],
                 [db.musics, 'id', 'DESC'],
                 [{model: db.friends, as: 'friend'}, 'id', 'DESC'],

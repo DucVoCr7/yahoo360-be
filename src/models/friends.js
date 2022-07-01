@@ -11,15 +11,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // db.Subscription.belongsTo(db.User, {
-      //   as: 'creator',
-      //   foreignKey: 'creatorId'
-      // });
-      
-      // db.Subscription.belongsTo(db.User, {
-      //   as: 'subscriber',
-      //   foreignKey: 'subscriberId'
-      // });
       friends.belongsTo(models.users, {as: 'dataFriend', foreignKey:'friendId'})
       friends.belongsTo(models.users, {as: 'dataFriendRequest', foreignKey:'userId'})
     }
