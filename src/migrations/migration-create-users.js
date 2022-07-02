@@ -7,10 +7,9 @@ module.exports = {
       // image: DataTypes.STRING,
       // email: DataTypes.STRING,
       // password: DataTypes.STRING,
-      // gender: DataTypes.BOOLEAN,
+      // gender: DataTypes.STRING,
       // phoneNumber: DataTypes.STRING,
       // address: DataTypes.STRING,
-      // position: DataTypes.STRING
       // cloudinary_id: DataTypes.STRING,
       id: {
         allowNull: false,
@@ -18,7 +17,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      roleId: {
+      role: {
         type: Sequelize.STRING
       },
       name: {
@@ -34,7 +33,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       gender: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.STRING
       },
       phoneNumber: {
         type: Sequelize.STRING

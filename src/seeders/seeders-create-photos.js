@@ -1,6 +1,6 @@
-const { faker } = require('@faker-js/faker');
+const { faker } = require("@faker-js/faker");
 
-'use strict';
+"use strict";
 
 module.exports = {
     async up(queryInterface, Sequelize) {
@@ -14,7 +14,7 @@ module.exports = {
                 Array.from(new Array(nPhotos)).forEach((element, key2) => {
                     const photo = {
                         userId: key1 + 1,
-                        photo: faker.image.image(1280, 720).replace('http://', 'https://'), //
+                        photo: faker.image.image(1280, 720).replace("http://", "https://"), //
                         createdAt: new Date(),
                         updatedAt: new Date()
                     }
@@ -23,7 +23,7 @@ module.exports = {
             })
             return photosList
         }
-        return await queryInterface.bulkInsert('photos', randomPhotosList(10, 10));
+        return await queryInterface.bulkInsert("photos", randomPhotosList(10, 10));
     },
 
     async down(queryInterface, Sequelize) {
@@ -31,7 +31,7 @@ module.exports = {
          * Add commands to revert seed here.
          *
          * Example:
-         * await queryInterface.bulkDelete('People', null, {});
+         * await queryInterface.bulkDelete("People", null, {});
          */
     }
 };

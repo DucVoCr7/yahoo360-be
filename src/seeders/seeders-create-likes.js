@@ -1,6 +1,6 @@
-const { faker } = require('@faker-js/faker');
+const { faker } = require("@faker-js/faker");
 
-'use strict';
+"use strict";
 
 module.exports = {
     async up(queryInterface, Sequelize) {
@@ -23,7 +23,7 @@ module.exports = {
             })
             return likesList
         }
-        return await queryInterface.bulkInsert('likes', randomLikesList(10, 100));
+        return await queryInterface.bulkInsert("likes", randomLikesList(10, 100));
     },
 
     async down(queryInterface, Sequelize) {
@@ -31,7 +31,7 @@ module.exports = {
          * Add commands to revert seed here.
          *
          * Example:
-         * await queryInterface.bulkDelete('People', null, {});
+         * await queryInterface.bulkDelete("People", null, {});
          */
     }
 };

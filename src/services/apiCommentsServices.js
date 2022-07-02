@@ -52,6 +52,13 @@ const createComment = async (data, userIdToken) => {
         const newComment = await db.comments.create({
             ...data,
         })
+        const post = await db.posts.findOne({
+            where: {id: data.postId}
+        })
+        await post.update({
+            ...post,
+            likesNumber: post.likesNumber + 1
+        })
         return {
             message: 'Comment success!',
             comment: newComment
@@ -89,7 +96,7 @@ const updateComment = async (id, data, userIdToken) => {
 const deleteComment = async (id, userIdToken) => {
     try {
         const comment = await db.comments.findOne({
-            where: { id: id }
+            where: { id: id },
         })
         if (!comment) {
             return {
@@ -109,10 +116,16 @@ const deleteComment = async (id, userIdToken) => {
         }
 
         // Delete Replies
-        await db.replies.destroy({where: {commentId: comment.id}})
+        const repliesNumber = await db.replies.destroy({where: {commentId: comment.id}})
         // Delete Comment
         await comment.destroy(); 
-
+        const post = await db.posts.findOne({
+            where: {id: comment.postId}
+        })
+        await post.update({
+            ...post,
+            commentsNumber: post.commentsNumber - 1 - repliesNumber
+        })
         return {
             message: 'Delete comment success!'
         }

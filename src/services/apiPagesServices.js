@@ -1,23 +1,10 @@
 import db from '../models/index'
 
-const getNewPosts = async () => {
-    try {
-        const newPosts = await db.posts.findAll({
-            limit: 10,
-            order: [
-                ['id', 'DESC']
-            ],
-            include: [{ model: db.users, attributes: ['id', 'name', 'image'] }]
-        })
-        return newPosts
-    } catch (error) { return (error) }
-}
-
 const getNewPostsCategory = async (category) => {
     try {
         const newPostsCategory = await db.posts.findAll({
             where: { category: category },
-            limit: 5,
+            limit: 6,
             order: [
                 ['id', 'DESC']
             ],
@@ -49,26 +36,32 @@ const postsPage = async (category)=> {
 }
 const communityPage = async () => {
     try {
-        // ['Life', 'Sport', 'Style', 'Tech', 'Music', 'Cinema', 'Travel', 'Food']
-        const newPosts = await getNewPosts()
-        const newPostsLife = await getNewPostsCategory('Life')
-        const newPostsSport = await getNewPostsCategory('Sport')
-        const newPostsStyle = await getNewPostsCategory('Style')
-        const newPostsTech = await getNewPostsCategory('Tech')
-        const newPostsMusic = await getNewPostsCategory('Music')
-        const newPostsCinema = await getNewPostsCategory('Cinema')
-        const newPostsTravel = await getNewPostsCategory('Travel')
-        const newPostsFood = await getNewPostsCategory('Food')
+        const newPostsC0 = await getNewPostsCategory('C0')
+        const newPostsC1 = await getNewPostsCategory('C1')
+        const newPostsC2 = await getNewPostsCategory('C2')
+        const newPostsC3 = await getNewPostsCategory('C3')
+        const newPostsC4 = await getNewPostsCategory('C4')
+        const newPostsC5 = await getNewPostsCategory('C5')
+        const newPostsC6 = await getNewPostsCategory('C6')
+        const newPosts = []
+        newPosts.push(
+            newPostsC0.pop(),
+            newPostsC1.pop(),
+            newPostsC2.pop(),
+            newPostsC3.pop(),
+            newPostsC4.pop(),
+            newPostsC5.pop(),
+            newPostsC6.pop()
+        )
         return {
             newPosts,
-            newPostsLife,
-            newPostsSport,
-            newPostsStyle,
-            newPostsTech,
-            newPostsMusic,
-            newPostsCinema,
-            newPostsTravel,
-            newPostsFood,
+            newPostsC0,
+            newPostsC1,
+            newPostsC2,
+            newPostsC3,
+            newPostsC4,
+            newPostsC5,
+            newPostsC6,
         }
     } catch (error) { return (error) }
 }
@@ -81,12 +74,7 @@ const userPage = async (id) => {
             },
             include: [
                 {
-                    model: db.posts,
-                    include: [
-                        {
-                            model: db.comments,
-                        }
-                    ]
+                    model: db.posts
                 },
                 {
                     model: db.photos
@@ -109,7 +97,7 @@ const userPage = async (id) => {
                 },
             ],
             order: [
-                [db.posts, db.comments, 'id', 'DESC'],
+                [db.posts, 'id', 'DESC'],
                 [db.photos, 'id', 'DESC'],
                 [db.musics, 'id', 'DESC'],
                 [{model: db.friends, as: 'friend'}, 'id', 'DESC'],
@@ -144,12 +132,7 @@ const homePage = async (id, userIdToken) => {
             },
             include: [
                 {
-                    model: db.posts,
-                    include: [
-                        {
-                            model: db.comments,
-                        }
-                    ]
+                    model: db.posts
                 },
                 {
                     model: db.photos
@@ -185,7 +168,7 @@ const homePage = async (id, userIdToken) => {
                 }
             ],
             order: [
-                [db.posts, db.comments, 'id', 'DESC'],
+                [db.posts, 'id', 'DESC'],
                 [db.photos, 'id', 'DESC'],
                 [db.musics, 'id', 'DESC'],
                 [{model: db.friends, as: 'friend'}, 'id', 'DESC'],

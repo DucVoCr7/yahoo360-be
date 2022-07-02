@@ -19,15 +19,16 @@ module.exports = (sequelize, DataTypes) => {
       users.hasMany(models.photos, {foreignKey:'userId'})
       users.hasMany(models.posts, {foreignKey:'userId'})
       users.hasMany(models.replies, {foreignKey:'userId'})
+
     }
   }
   users.init({
-    roleId: DataTypes.STRING,
+    role: DataTypes.STRING,
     name: DataTypes.STRING,
     image: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    gender: DataTypes.BOOLEAN,
+    gender: DataTypes.STRING,
     phoneNumber: DataTypes.STRING,
     address: DataTypes.STRING,
     position: DataTypes.STRING,

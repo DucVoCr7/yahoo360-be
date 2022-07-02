@@ -1,11 +1,11 @@
-const { faker } = require('@faker-js/faker');
+const { faker } = require("@faker-js/faker");
 
 
 // Set locale to use Vietnamese
 
 
 // Function random data
-'use strict';
+"use strict";
 
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -24,15 +24,15 @@ module.exports = {
       // updatedAt: new Date()
       Array.from(new Array(nUsers)).forEach((element, key) => {
         const user = {
-          roleId: 'R1',
+          role: "R1",
           name: faker.name.findName(), //
-          image: faker.image.image(400, 400).replace('http://', 'https://'), //
+          image: faker.image.image(400, 400).replace("http://", "https://"), //
           email: faker.internet.email(), //
-          password: '$2a$10$Kj2R4yn/pd5/4mMPocVIputnyLpLOa.n/FIGZnX22eRcUIHEnwU/y',
-          gender: faker.datatype.boolean(), //
-          phoneNumber: faker.phone.phoneNumber('09########'), //
+          password: "$2a$10$Kj2R4yn/pd5/4mMPocVIputnyLpLOa.n/FIGZnX22eRcUIHEnwU/y",
+          gender: faker.helpers.arrayElement(["G0", "G1"]),
+          phoneNumber: faker.phone.phoneNumber("09########"), //
           address: faker.address.cityName(), //
-          position: 'Newbie',
+          position: "P0",
           cloudinary_id: null,
           createdAt: new Date(),
           updatedAt: new Date()
@@ -41,7 +41,7 @@ module.exports = {
       })
       return usersList
     }
-    return await queryInterface.bulkInsert('users', randomUsersList(10));
+    return await queryInterface.bulkInsert("users", randomUsersList(10));
   },
 
   async down(queryInterface, Sequelize) {
@@ -49,7 +49,7 @@ module.exports = {
      * Add commands to revert seed here.
      *
      * Example:
-     * await queryInterface.bulkDelete('People', null, {});
+     * await queryInterface.bulkDelete("People", null, {});
      */
   }
 };

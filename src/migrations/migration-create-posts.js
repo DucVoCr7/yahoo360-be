@@ -33,6 +33,9 @@ module.exports = {
       likesNumber: {
         type: Sequelize.INTEGER
       },
+      commentsNumber: {
+        type: Sequelize.INTEGER
+      },
       cloudinary_id: {
         type: Sequelize.STRING
       },

@@ -43,6 +43,15 @@ const createReply = async (data, userIdToken) => {
         const newReply = await db.replies.create({
             ...data,
         })
+
+        const post = await db.posts.findOne({
+            where: {id: data.postId}
+        })
+        await post.update({
+            ...post,
+            commentsNumber: post.commentsNumber + 1
+        })
+
         return {
             message: 'Reply success!',
             reply: newReply
@@ -99,6 +108,24 @@ const deleteReply = async (id, userIdToken) => {
             }
         }
         await reply.destroy(); // Delete reply
+
+        const comment = await db.comments.findOne({
+            where: {id: reply.commentId}, //////
+            include: [
+                {
+                    model: db.posts,
+                    attributes: ['id']
+                },
+            ],
+        })
+        const post = await db.posts.findOne({
+            where: {id: comment.post.id}
+        })
+        await post.update({
+            ...post,
+            commentsNumber: post.commentsNumber - 1
+        })
+
         return {
             message: 'Delete reply success!'
         }
