@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import db from '../models/index'
 import 'dotenv/config'
 
 export const createAccessToken = (userId) => {
@@ -12,8 +13,8 @@ export const createRefreshToken = (userId) => {
 export const saveRefreshToken = async (userId, refreshToken) => {
     try {
         await db.refreshTokens.create({
-            userId,
-            refreshToken
+            userId: userId,
+            refreshToken: refreshToken
         })
     } catch (error) { return (error) }
 }
