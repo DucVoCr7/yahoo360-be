@@ -13,8 +13,8 @@ export const createRefreshToken = (userId) => {
 export const saveRefreshToken = async (userId, refreshToken) => {
     try {
         await db.refreshTokens.create({
-            userId: userId,
-            refreshToken: refreshToken
+            userId,
+            refreshToken
         })
     } catch (error) { return (error) }
 }

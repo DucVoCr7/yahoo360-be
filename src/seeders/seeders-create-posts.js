@@ -20,7 +20,7 @@ module.exports = {
                         userId: key1 + 1,
                         image: faker.image.image(1280, 720).replace("http://", "https://"), //
                         title: faker.lorem.lines(1), //
-                        category: faker.helpers.arrayElement(["C0", "C1", "C2", "C3", "C4", "C5", "C6"]),
+                        category: faker.helpers.arrayElement(["C0", "C1", "C2", "C3", "C4", "C5", "C6", "C7"]),
                         content: faker.lorem.paragraphs(40), //
                         likesNumber: 10, //
                         commentsNumber: 6, //

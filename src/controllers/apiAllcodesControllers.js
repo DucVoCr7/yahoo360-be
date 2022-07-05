@@ -1,7 +1,7 @@
 import apiAllcodesServices from '../services/apiAllcodesServices'
 
 const getType = async (req, res) => {
-    const data = await apiAllcodesServices.getType(req.query.type)
+    const data = await apiAllcodesServices.getType()
     if (data.errcodes) {
         return res.status(data.errcodes).json(data.errors)
     }

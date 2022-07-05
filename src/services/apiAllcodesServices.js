@@ -1,9 +1,8 @@
 import db from '../models/index'
 
-const getType = async (type) => {
+const getType = async () => {
     try {
         const data = await db.allcodes.findAll({
-            where: {type: type}
         })
         if(!data) {
             return {
