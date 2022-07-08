@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       users.hasMany(models.comments, {foreignKey:'userId'})
-      users.hasMany(models.friends, {as: 'friendRequest', foreignKey:'friendId'})
-      users.hasMany(models.friends, {as: 'friend', foreignKey:'userId'})
+      users.hasMany(models.friends, {as: 'friendsRequest', foreignKey:'friendId'})
+      users.hasMany(models.friends, {as: 'friends', foreignKey:'userId'})
       users.hasMany(models.likes, {foreignKey:'userId'})
       users.hasMany(models.musics, {foreignKey:'userId'})
       users.hasMany(models.photos, {foreignKey:'userId'})

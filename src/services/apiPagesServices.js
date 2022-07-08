@@ -4,7 +4,7 @@ const getNewPostsCategory = async (category) => {
     try {
         const newPostsCategory = await db.posts.findAll({
             where: { category: category },
-            limit: 6,
+            limit: 5,
             order: [
                 ['id', 'DESC']
             ],
@@ -43,18 +43,18 @@ const communityPage = async () => {
         const newPostsC4 = await getNewPostsCategory('C4')
         const newPostsC5 = await getNewPostsCategory('C5')
         const newPostsC6 = await getNewPostsCategory('C6')
-        const newPosts = []
-        newPosts.push(
-            newPostsC0.pop(),
-            newPostsC1.pop(),
-            newPostsC2.pop(),
-            newPostsC3.pop(),
-            newPostsC4.pop(),
-            newPostsC5.pop(),
-            newPostsC6.pop()
-        )
+        // const newPosts = []
+        // newPosts.push(
+        //     newPostsC0.pop(),
+        //     newPostsC1.pop(),
+        //     newPostsC2.pop(),
+        //     newPostsC3.pop(),
+        //     newPostsC4.pop(),
+        //     newPostsC5.pop(),
+        //     newPostsC6.pop()
+        // )
         return {
-            newPosts,
+            // newPosts,
             newPostsC0,
             newPostsC1,
             newPostsC2,
@@ -84,7 +84,7 @@ const userPage = async (id) => {
                 },
                 {
                     model: db.friends,
-                    as: 'friend',
+                    as: 'friends',
                     where: { status: true },
                     required: false,
                     include: [
@@ -100,7 +100,7 @@ const userPage = async (id) => {
                 [db.posts, 'id', 'DESC'],
                 [db.photos, 'id', 'DESC'],
                 [db.musics, 'id', 'DESC'],
-                [{model: db.friends, as: 'friend'}, 'id', 'DESC'],
+                [{model: db.friends, as: 'friends'}, 'id', 'DESC'],
 
             ]
         })
@@ -142,7 +142,7 @@ const homePage = async (id, userIdToken) => {
                 },
                 {
                     model: db.friends,
-                    as: 'friend',
+                    as: 'friends',
                     where: { status: true },
                     required: false,
                     include: [
@@ -155,7 +155,7 @@ const homePage = async (id, userIdToken) => {
                 }, 
                 {
                     model: db.friends,
-                    as: 'friendRequest',
+                    as: 'friendsRequest',
                     where: { status: false },
                     required: false,
                     include: [
@@ -171,8 +171,8 @@ const homePage = async (id, userIdToken) => {
                 [db.posts, 'id', 'DESC'],
                 [db.photos, 'id', 'DESC'],
                 [db.musics, 'id', 'DESC'],
-                [{model: db.friends, as: 'friend'}, 'id', 'DESC'],
-                [{model: db.friends, as: 'friendRequest'}, 'id', 'DESC']
+                [{model: db.friends, as: 'friends'}, 'id', 'DESC'],
+                [{model: db.friends, as: 'friendsRequest'}, 'id', 'DESC']
             ]
         })
         if (!dataUser) {
