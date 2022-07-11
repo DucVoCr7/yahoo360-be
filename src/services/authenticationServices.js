@@ -103,6 +103,8 @@ const register = async (data) => {
         const user = (await db.users.create({
             name: data.name,
             email: data.email,
+            role: 'R1',
+            position: 'P0',
             password: hashPassword(data.password)
         })).get({ plain: true }) // Tương tự set raw: true để delete password
         delete user.password

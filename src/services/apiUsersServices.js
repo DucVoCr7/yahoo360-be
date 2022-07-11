@@ -37,7 +37,7 @@ const updateUser = async (id, data, userIdToken, path) => {
                 }
             }
         }
-        if (user.id !== userIdToken || data.roleId) {
+        if (user.id !== userIdToken || data.role) {
             return {
                 errCode: 403,
                 errors: {
@@ -76,7 +76,7 @@ const deleteUser = async (id, userIdToken) => {
         const admin = await db.users.findOne({
             where: {id: userIdToken}
         })
-        if (!admin || admin.roleId !== 'R0') {
+        if (!admin || admin.role !== 'R0') {
             return {
                 errCode: 403,
                 errors: {

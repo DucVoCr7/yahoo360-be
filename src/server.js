@@ -18,10 +18,11 @@ import initAPIUsersRoutes from './routes/apiUsers';
 import initAPIAllcodesRoutes from './routes/apiAllcodes';
 
 const app = express()
-let port = process.env.PORT || 3000;
+let port = process.env.PORT || 3000; 
 
- // Enable All CORS Requests
+// Enable All CORS Requests
 app.use(cors())
+
 
 app.use(express.json());
 app.use(express.urlencoded({
