@@ -6,7 +6,7 @@ const readAllUser = async (userIdToken) => {
         const admin = await db.users.findOne({
             where: {id: userIdToken}
         })
-        if (!admin || admin.roleId !== 'R0') {
+        if (!admin || admin.role !== 'R0') {
             return {
                 errCode: 403,
                 errors: {
