@@ -95,12 +95,26 @@ const userPage = async (id) => {
                         }
                     ],
                 },
+                {
+                    model: db.friends,
+                    as: 'friendsRequest',
+                    where: { status: false },
+                    required: false,
+                    include: [
+                        {
+                            model: db.users,
+                            as: 'dataFriendRequest',
+                            attributes: ['id', 'name', 'image']
+                        }
+                    ],
+                }
             ],
             order: [
                 [db.posts, 'id', 'DESC'],
                 [db.photos, 'id', 'DESC'],
                 [db.musics, 'id', 'DESC'],
                 [{model: db.friends, as: 'friends'}, 'id', 'DESC'],
+                [{model: db.friends, as: 'friendsRequest'}, 'id', 'DESC']
 
             ]
         })

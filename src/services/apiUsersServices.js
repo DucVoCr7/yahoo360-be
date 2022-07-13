@@ -4,7 +4,10 @@ const cloudinary = require('../utils/cloudinary')
 const readAllUser = async (userIdToken) => {
     try {
         const admin = await db.users.findOne({
-            where: {id: userIdToken}
+            where: {id: userIdToken},
+            order: [
+                ['id', 'DESC']
+            ],
         })
         if (!admin || admin.role !== 'R0') {
             return {
