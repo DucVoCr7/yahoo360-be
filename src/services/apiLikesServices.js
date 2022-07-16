@@ -18,7 +18,7 @@ const readLikesOfPost = async (postId) => {
             include: [
                 {
                     model: db.users,
-                    attributes: ['id', 'name', 'image']
+                    attributes: ['name', 'image']
                 }
             ],
             order: [

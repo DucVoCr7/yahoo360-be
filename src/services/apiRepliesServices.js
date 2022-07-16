@@ -18,7 +18,7 @@ const readRepliesOfComment = async (commentId) => {
             include: [
                 {
                     model: db.users,
-                    attributes: ['id', 'name', 'image']
+                    attributes: ['name', 'image']
                 },
             ],
             order: [
@@ -44,6 +44,13 @@ const createReply = async (data, userIdToken) => {
             ...data,
         })
 
+        const reply = await db.replies.findOne({
+            where: {id : newReply.id},
+            include: [
+                { model: db.users, attributes: ['name', 'image'] }
+            ]
+        })
+
         const post = await db.posts.findOne({
             where: {id: data.postId}
         })
@@ -54,7 +61,7 @@ const createReply = async (data, userIdToken) => {
 
         return {
             message: 'Reply success!',
-            reply: newReply
+            reply: reply
         }
     } catch (error) { return (error) }
 }

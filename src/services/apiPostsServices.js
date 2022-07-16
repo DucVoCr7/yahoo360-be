@@ -39,6 +39,7 @@ const createPost = async (data, userIdToken, path) => {
         const newPost = await db.posts.create({
             ...data,
             likesNumber: 0,
+            commentsNumber: 0,
             image: resultImage.secure_url,
             cloudinary_id: resultImage.public_id
         })

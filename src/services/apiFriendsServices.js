@@ -19,7 +19,7 @@ const readFriendsOfUser = async (userId) => {
                 {
                     model: db.users,
                     as: 'dataFriend',
-                    attributes: ['id', 'name', 'image']
+                    attributes: ['name', 'image']
                 }
             ],
             order: [
@@ -32,7 +32,7 @@ const readFriendsOfUser = async (userId) => {
                 {
                     model: db.users,
                     as: 'dataFriendRequest',
-                    attributes: ['id', 'name', 'image']
+                    attributes: ['name', 'image']
                 }
             ],
             order: [

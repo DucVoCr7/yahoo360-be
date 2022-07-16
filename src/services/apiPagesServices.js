@@ -19,7 +19,7 @@ const postsPage = async (category)=> {
             order: [
                 ['id', 'DESC']
             ],
-            include: [{ model: db.users, attributes: ['id', 'name', 'image'] }]
+            include: [{ model: db.users, attributes: ['name', 'image'] }]
         })
         if (dataPosts.length === 0) {
             return {
@@ -91,7 +91,7 @@ const userPage = async (id) => {
                         {
                             model: db.users,
                             as: 'dataFriend',
-                            attributes: ['id', 'name', 'image']
+                            attributes: ['name', 'image']
                         }
                     ],
                 },
@@ -104,7 +104,7 @@ const userPage = async (id) => {
                         {
                             model: db.users,
                             as: 'dataFriendRequest',
-                            attributes: ['id', 'name', 'image']
+                            attributes: ['name', 'image']
                         }
                     ],
                 }
@@ -163,7 +163,7 @@ const homePage = async (id, userIdToken) => {
                         {
                             model: db.users,
                             as: 'dataFriend',
-                            attributes: ['id', 'name', 'image']
+                            attributes: ['name', 'image']
                         }
                     ],
                 }, 
@@ -176,7 +176,7 @@ const homePage = async (id, userIdToken) => {
                         {
                             model: db.users,
                             as: 'dataFriendRequest',
-                            attributes: ['id', 'name', 'image']
+                            attributes: ['name', 'image']
                         }
                     ],
                 }

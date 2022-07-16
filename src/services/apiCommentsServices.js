@@ -18,14 +18,14 @@ const readCommentsOfPost = async (postId) => {
             include: [
                 {
                     model: db.users,
-                    attributes: ['id', 'name', 'image']
+                    attributes: ['name', 'image']
                 },
                 {
                     model: db.replies,
                     include: [
                         {
                             model: db.users,
-                            attributes: ['id', 'name', 'image']
+                            attributes: ['name', 'image']
                         }
                     ]
                 }
@@ -52,6 +52,12 @@ const createComment = async (data, userIdToken) => {
         const newComment = await db.comments.create({
             ...data,
         })
+        const comment = await db.comments.findOne({
+            where: {id : newComment.id},
+            include: [
+                { model: db.users, attributes: ['name', 'image'] }
+            ]
+        })
         const post = await db.posts.findOne({
             where: {id: data.postId}
         })
@@ -61,7 +67,7 @@ const createComment = async (data, userIdToken) => {
         })
         return {
             message: 'Comment success!',
-            comment: newComment
+            comment: comment
         }
     } catch (error) { return (error) }
 }
