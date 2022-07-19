@@ -1,6 +1,6 @@
 import apiLikesServices from '../services/apiLikesServices'
 const readLikesOfPost = async (req, res) => {
-    const data = await apiLikesServices.readLikesOfPost(req.query.PostId)
+    const data = await apiLikesServices.readLikesOfPost(req.query.postId)
     if (data.errCode) {
         return res.status(data.errCode).json(data.errors)
     }

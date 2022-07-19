@@ -52,12 +52,6 @@ const createComment = async (data, userIdToken) => {
         const newComment = await db.comments.create({
             ...data,
         })
-        const comment = await db.comments.findOne({
-            where: {id : newComment.id},
-            include: [
-                { model: db.users, attributes: ['name', 'image'] }
-            ]
-        })
         const post = await db.posts.findOne({
             where: {id: data.postId}
         })
@@ -67,7 +61,7 @@ const createComment = async (data, userIdToken) => {
         })
         return {
             message: 'Comment success!',
-            comment: comment
+            comment: newComment
         }
     } catch (error) { return (error) }
 }

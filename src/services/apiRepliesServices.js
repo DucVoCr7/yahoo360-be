@@ -44,13 +44,6 @@ const createReply = async (data, userIdToken) => {
             ...data,
         })
 
-        const reply = await db.replies.findOne({
-            where: {id : newReply.id},
-            include: [
-                { model: db.users, attributes: ['name', 'image'] }
-            ]
-        })
-
         const post = await db.posts.findOne({
             where: {id: data.postId}
         })
@@ -61,7 +54,7 @@ const createReply = async (data, userIdToken) => {
 
         return {
             message: 'Reply success!',
-            reply: reply
+            reply: newReply
         }
     } catch (error) { return (error) }
 }

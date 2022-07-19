@@ -13,7 +13,7 @@ const readLikesOfPost = async (postId) => {
                 }
             }
         }
-        const dataLikesOfPost = await db.Likes.findAll({
+        const dataLikesOfPost = await db.likes.findAll({
             where: {postId: postId},
             include: [
                 {
