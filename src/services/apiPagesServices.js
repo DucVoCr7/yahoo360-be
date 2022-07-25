@@ -43,18 +43,7 @@ const communityPage = async () => {
         const newPostsC4 = await getNewPostsCategory('C4')
         const newPostsC5 = await getNewPostsCategory('C5')
         const newPostsC6 = await getNewPostsCategory('C6')
-        // const newPosts = []
-        // newPosts.push(
-        //     newPostsC0.pop(),
-        //     newPostsC1.pop(),
-        //     newPostsC2.pop(),
-        //     newPostsC3.pop(),
-        //     newPostsC4.pop(),
-        //     newPostsC5.pop(),
-        //     newPostsC6.pop()
-        // )
         return {
-            // newPosts,
             newPostsC0,
             newPostsC1,
             newPostsC2,
@@ -94,28 +83,13 @@ const userPage = async (id) => {
                             attributes: ['name', 'image']
                         }
                     ],
-                },
-                {
-                    model: db.friends,
-                    as: 'friendsRequest',
-                    where: { status: false },
-                    required: false,
-                    include: [
-                        {
-                            model: db.users,
-                            as: 'dataFriendRequest',
-                            attributes: ['name', 'image']
-                        }
-                    ],
                 }
             ],
             order: [
                 [db.posts, 'id', 'DESC'],
                 [db.photos, 'id', 'DESC'],
                 [db.musics, 'id', 'DESC'],
-                [{model: db.friends, as: 'friends'}, 'id', 'DESC'],
-                [{model: db.friends, as: 'friendsRequest'}, 'id', 'DESC']
-
+                [{model: db.friends, as: 'friends'}, 'id', 'DESC']
             ]
         })
         if (!dataUser) {
@@ -158,7 +132,7 @@ const homePage = async (id, userIdToken) => {
                     model: db.friends,
                     as: 'friends',
                     where: { status: true },
-                    required: false,
+                    required: false, // Để có thể trả về mảng rỗng
                     include: [
                         {
                             model: db.users,
@@ -166,16 +140,29 @@ const homePage = async (id, userIdToken) => {
                             attributes: ['name', 'image']
                         }
                     ],
-                }, 
+                },
                 {
                     model: db.friends,
-                    as: 'friendsRequest',
+                    as: 'friendRequestSents',
                     where: { status: false },
-                    required: false,
+                    required: false, // Để có thể trả về mảng rỗng
                     include: [
                         {
                             model: db.users,
-                            as: 'dataFriendRequest',
+                            as: 'dataFriendRequestSent',
+                            attributes: ['name', 'image']
+                        }
+                    ],
+                }, 
+                {
+                    model: db.friends,
+                    as: 'friendRequestReceiveds',
+                    where: { status: false },
+                    required: false, // Để có thể trả về mảng rỗng
+                    include: [
+                        {
+                            model: db.users,
+                            as: 'dataFriendRequestReceived',
                             attributes: ['name', 'image']
                         }
                     ],
@@ -186,7 +173,8 @@ const homePage = async (id, userIdToken) => {
                 [db.photos, 'id', 'DESC'],
                 [db.musics, 'id', 'DESC'],
                 [{model: db.friends, as: 'friends'}, 'id', 'DESC'],
-                [{model: db.friends, as: 'friendsRequest'}, 'id', 'DESC']
+                [{model: db.friends, as: 'friendRequestReceiveds'}, 'id', 'DESC'],
+                [{model: db.friends, as: 'friendRequestSents'}, 'id', 'DESC']
             ]
         })
         if (!dataUser) {

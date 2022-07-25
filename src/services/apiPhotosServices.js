@@ -42,7 +42,7 @@ const createPhoto = async (data, userIdToken, path) => {
             cloudinary_id: resultPhoto.public_id
         })
         return {
-            message: 'Add photo success!',
+            message: 'Add photo successfully!',
             photo: newPhoto
         }
     } catch (error) { return (error) }
@@ -76,7 +76,7 @@ const deletePhoto = async (id, userIdToken) => {
         await photo.destroy();
         
         return {
-            message: 'Delete photo success!'
+            message: 'Delete photo successfully!'
         }
     } catch (error) { return (error) }
 }

@@ -3,7 +3,6 @@ import authenticationControllers from '../controllers/authenticationControllers'
 const router = express.Router()
 
 const initAuthenticationRoutes = (app)=> {
-    // router.get('/', Hàm từ controllers)
     router.post('/login', authenticationControllers.login)
     router.post('/register', authenticationControllers.register)
     return app.use ('/api', router)

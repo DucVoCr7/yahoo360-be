@@ -44,7 +44,7 @@ const createPost = async (data, userIdToken, path) => {
             cloudinary_id: resultImage.public_id
         })
         return {
-            message: 'Create post success!',
+            message: 'Create post successfully!',
             post: newPost
         }
     } catch (error) { return (error) }
@@ -93,14 +93,14 @@ const updatePost = async (id, data, userIdToken, path) => {
         }
         // Co path thi xoa image cu. Gan image new vao
         if (path) {
-            await cloudinary.uploader.destroy(post.cloudinary_id)
+            post.cloudinary_id && await cloudinary.uploader.destroy(post.cloudinary_id)
             const resultImage = await cloudinary.uploader.upload(path);
             data.image = resultImage.secure_url
             data.cloudinary_id = resultImage.public_id
         }
         const newPost = await post.update({ ...data })
         return {
-            message: 'Update post success!',
+            message: 'Update post successfully!',
             post: newPost
         }
     } catch (error) { return (error) }
@@ -146,7 +146,7 @@ const deletePost = async (id, userIdToken) => {
         await post.destroy();
 
         return {
-            message: 'Delete post success!'
+            message: 'Delete post successfully!'
         }
     } catch (error) { return (error) }
 }

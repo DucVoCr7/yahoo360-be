@@ -4,12 +4,12 @@ import verifyToken from "../middlewares/verifyToken";
 const router = express.Router()
 
 const initAPIFriendsRoutes = (app)=> {
-    router.get('/', apiFriendsControllers.readFriendsOfUser)
-    router.post('/', verifyToken, apiFriendsControllers.requestFriend)
-    router.patch('/:id', verifyToken, apiFriendsControllers.acceptFriend)
-    router.delete('/refuseFriend/:id', verifyToken, apiFriendsControllers.refuseFriend)
-    router.delete('/deleteFriend/:id', verifyToken, apiFriendsControllers.deleteFriend)
-    return app.use ('/api/friends', router)
+    router.post('/sentRequest', apiFriendsControllers.sentRequest)
+    router.delete('/removeRequest/:id', apiFriendsControllers.removeRequest)
+    router.patch('/acceptRequest/:id', apiFriendsControllers.acceptRequest)
+    router.delete('/refuseRequest/:id', apiFriendsControllers.refuseRequest)
+    router.delete('/deleteFriend/:id', apiFriendsControllers.deleteFriend)
+    return app.use ('/api/friends', verifyToken, router)
 }
 
 export default initAPIFriendsRoutes;

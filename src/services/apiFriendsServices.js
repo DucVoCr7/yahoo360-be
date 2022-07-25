@@ -1,52 +1,5 @@
 import db from '../models/index'
-
-const readFriendsOfUser = async (userId) => {
-    try {
-        const user = await db.users.findOne({
-            where: {id: userId}
-        })
-        if(!user) {
-            return {
-                errCode: 400,
-                errors: {
-                    message: 'User does not exist!'
-                }
-            }
-        }
-        const dataFriendsOfUser = await db.friends.findAll({
-            where: {userId: userId, status: true},
-            include: [
-                {
-                    model: db.users,
-                    as: 'dataFriend',
-                    attributes: ['name', 'image']
-                }
-            ],
-            order: [
-                ['id', 'DESC']
-            ]
-        })
-        const dataFriendsRequestOfUser = await db.friends.findAll({
-            where: {friendId: userId, status: false},
-            include: [
-                {
-                    model: db.users,
-                    as: 'dataFriendRequest',
-                    attributes: ['name', 'image']
-                }
-            ],
-            order: [
-                ['id', 'DESC']
-            ]
-        })
-        return {
-            dataFriendsOfUser,
-            dataFriendsRequestOfUser
-        }
-    } catch (error) { return (error) }
-}
-
-const requestFriend = async (data, userIdToken) => {
+const sentRequest = async (data, userIdToken) => {
     try {
         if (data.userId != userIdToken) {
             return {
@@ -65,12 +18,12 @@ const requestFriend = async (data, userIdToken) => {
         }
     } catch (error) { return (error) }
 }
-const acceptFriend = async (id, data, userIdToken) => {
+const removeRequest = async (id, userIdToken) => {
     try {
-        const requestFriend = await db.friends.findOne({
+        const request = await db.friends.findOne({
             where: { id: id }
         })
-        if (!requestFriend) {
+        if (!request) {
             return {
                 errCode: 400,
                 errors: {
@@ -78,7 +31,7 @@ const acceptFriend = async (id, data, userIdToken) => {
                 }
             }
         }
-        if (requestFriend.friendId !== userIdToken) {
+        if (request.userId !== userIdToken) {
             return {
                 errCode: 403,
                 errors: {
@@ -88,36 +41,26 @@ const acceptFriend = async (id, data, userIdToken) => {
         }
         // Chấp nhận yêu cầu
         // Chuyển status
-        const newFriend = await requestFriend.update({
-            ...requestFriend,
-            status: true
-        })
-        // Tạo ngược bạn
-        await db.friends.create({
-            userId: newFriend.friendId,
-            friendId: newFriend.userId,
-            status: true
-        })
+        await request.destroy()
         return {
-            message: 'Add friend success!',
-            newFriend: newFriend
+            message: 'Remove request successfully!',
         }
     } catch (error) { return (error) }
 }
-const refuseFriend = async (id, userIdToken) => {
+const acceptRequest = async (id, userIdToken) => {
     try {
-        const dataRequestFriend = await db.friends.findOne({
-            where: { id: id },
+        const request = await db.friends.findOne({
+            where: { id: id }
         })
-        if (!dataRequestFriend) {
+        if (!request) {
             return {
                 errCode: 400,
                 errors: {
-                    message: 'Friend does not exist!'
+                    message: 'Friend request does not exist!'
                 }
             }
         }
-        if (dataRequestFriend.friendId !== userIdToken) {
+        if (request.friendId !== userIdToken) {
             return {
                 errCode: 403,
                 errors: {
@@ -125,7 +68,45 @@ const refuseFriend = async (id, userIdToken) => {
                 }
             }
         }
-        await dataRequestFriend.destroy();
+        // Chấp nhận yêu cầu
+        // Chuyển status
+        await request.update({
+            ...request,
+            status: true
+        })
+        // Tạo ngược bạn
+        await db.friends.create({
+            userId: request.friendId,
+            friendId: request.userId,
+            status: true
+        })
+        return {
+            message: 'Add friend successfully!',
+        }
+    } catch (error) { return (error) }
+}
+const refuseRequest = async (id, userIdToken) => {
+    try {
+        const request = await db.friends.findOne({
+            where: { id: id },
+        })
+        if (!request) {
+            return {
+                errCode: 400,
+                errors: {
+                    message: 'Friend does not exist!'
+                }
+            }
+        }
+        if (request.friendId !== userIdToken) {
+            return {
+                errCode: 403,
+                errors: {
+                    message: 'Request not processed!'
+                }
+            }
+        }
+        await request.destroy();
             return {
                 message: 'You declined the friend request!'
             }
@@ -165,14 +146,14 @@ const deleteFriend = async (id, userIdToken) => {
         await dataFriend.destroy();
 
         return {
-            message: 'Remove friend success!'
+            message: 'Remove friend successfully!'
         }
     } catch (error) { return (error) }
 }
 module.exports = {
-    readFriendsOfUser: readFriendsOfUser,
-    requestFriend: requestFriend,
-    acceptFriend: acceptFriend,
-    refuseFriend: refuseFriend,
+    removeRequest: removeRequest,
+    sentRequest: sentRequest,
+    acceptRequest: acceptRequest,
+    refuseRequest: refuseRequest,
     deleteFriend: deleteFriend
 }

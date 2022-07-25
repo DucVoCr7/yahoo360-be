@@ -39,7 +39,7 @@ const createMusic = async (data, userIdToken) => {
             ...data,
         })
         return {
-            message: 'Add music success!',
+            message: 'Add music successfully!',
             music: newMusic
         }
     } catch (error) { return (error) }
@@ -68,7 +68,7 @@ const deleteMusic = async (id, userIdToken) => {
         }
         await music.destroy();
         return {
-            message: 'Delete music success!'
+            message: 'Delete music successfully!'
         }
     } catch (error) { return (error) }
 }

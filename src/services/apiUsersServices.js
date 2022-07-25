@@ -50,14 +50,14 @@ const updateUser = async (id, data, userIdToken, path) => {
         }
         // Co path thi xoa image cu. Gan image new vao
         if (path) {
-            await cloudinary.uploader.destroy(post.cloudinary_id)
+            user.cloudinary_id && await cloudinary.uploader.destroy(user.cloudinary_id)
             const resultImage = await cloudinary.uploader.upload(path);
             data.image = resultImage.secure_url
             data.cloudinary_id = resultImage.public_id
         }
         const newUser = await user.update({ ...data })
         return {
-            message: 'Update user success!',
+            message: 'Update user successfully!',
             user: newUser
         }
     } catch (error) { return (error) }
@@ -111,7 +111,7 @@ const deleteUser = async (id, userIdToken) => {
         await user.destroy();
 
         return {
-            message: 'Delete user success!',
+            message: 'Delete user successfully!',
         }
     } catch (error) { return (error) }
 }

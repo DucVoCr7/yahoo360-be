@@ -57,10 +57,10 @@ const createComment = async (data, userIdToken) => {
         })
         await post.update({
             ...post,
-            likesNumber: post.likesNumber + 1
+            commentsNumber: post.commentsNumber + 1
         })
         return {
-            message: 'Comment success!',
+            message: 'Comment successfully!',
             comment: newComment
         }
     } catch (error) { return (error) }
@@ -88,7 +88,7 @@ const updateComment = async (id, data, userIdToken) => {
         }
         const newComment = await comment.update({ ...data })
         return {
-            message: 'Update comments success!',
+            message: 'Update comments successfully!',
             comment: newComment
         }
     } catch (error) { return (error) }
@@ -127,7 +127,7 @@ const deleteComment = async (id, userIdToken) => {
             commentsNumber: post.commentsNumber - 1 - repliesNumber
         })
         return {
-            message: 'Delete comment success!'
+            message: 'Delete comment successfully!'
         }
     } catch (error) { return (error) }
 }

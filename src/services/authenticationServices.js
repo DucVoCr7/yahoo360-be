@@ -103,6 +103,7 @@ const register = async (data) => {
         const user = (await db.users.create({
             name: data.name,
             email: data.email,
+            image: 'https://res.cloudinary.com/dy57fdikk/image/upload/v1658719897/blank-profile-picture-973460_640_qustp3.png',
             role: 'R1',
             position: 'P0',
             password: hashPassword(data.password)
