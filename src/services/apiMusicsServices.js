@@ -44,7 +44,28 @@ const createMusic = async (data, userIdToken) => {
         }
     } catch (error) { return (error) }
 }
-
+const updateMusic = async (id, data, userIdToken) => {
+    try {
+        const music = await db.musics.findOne({
+            where: {id: id}
+        })
+        if (music.userId != userIdToken) {
+            return {
+                errCode: 403,
+                errors: {
+                    message: 'Request not processed!'
+                }
+            }
+        }
+        const newMusic = await music.update({
+            ...data,
+        })
+        return {
+            message: 'Update music successfully!',
+            music: newMusic
+        }
+    } catch (error) { return (error) }
+}
 const deleteMusic = async (id, userIdToken) => {
     try {
         const music = await db.musics.findOne({
@@ -74,6 +95,7 @@ const deleteMusic = async (id, userIdToken) => {
 }
 
 module.exports = {
+    updateMusic: updateMusic,
     readMusicsOfUser: readMusicsOfUser,
     createMusic: createMusic,
     deleteMusic: deleteMusic

@@ -15,6 +15,13 @@ const createMusic = async (req, res) => {
     }
     return res.status(200).json(data)
 }
+const updateMusic = async (req, res) => {
+    const data = await apiMusicsServices.updateMusic(req.params.id, req.body, req.userIdToken)
+    if (data.errCode) {
+        return res.status(data.errCode).json(data.errors)
+    }
+    return res.status(200).json(data)
+}
 const deleteMusic = async (req, res) => {
     const data = await apiMusicsServices.deleteMusic(req.params.id, req.userIdToken)
     if (data.errCode) {
@@ -23,6 +30,7 @@ const deleteMusic = async (req, res) => {
     return res.status(200).json(data)
 }
 module.exports = {
+    updateMusic: updateMusic,
     readMusicsOfUser: readMusicsOfUser,
     createMusic: createMusic,
     deleteMusic: deleteMusic

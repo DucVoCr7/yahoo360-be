@@ -3,7 +3,7 @@ import cors from 'cors'
 import express from 'express'
 import viewEngine from './config/viewEngine';
 import initWebRoutes from './routes/web';
-import checkConnectDatabase from './config/connectDatabase'
+import checkConnectDatabase from './config/connectDatabase';
 import initAuthenticationRoutes from './routes/authentication';
 import initAPIPagesRoutes from './routes/apiPages';
 import initAPIPostsRoutes from './routes/apiPosts';
@@ -16,6 +16,7 @@ import initAPILikesRoutes from './routes/apiLikes';
 import initAPIFriendsRoutes from './routes/apiFriends';
 import initAPIUsersRoutes from './routes/apiUsers';
 import initAPIAllcodesRoutes from './routes/apiAllcodes';
+import initAPISearchRoutes from './routes/apiSearch';
 
 const app = express()
 let port = process.env.PORT || 3000; 
@@ -73,6 +74,9 @@ initAPIUsersRoutes(app)
 
 // Init APIAllcode route
 initAPIAllcodesRoutes(app)
+
+// Init APISearch route
+initAPISearchRoutes(app)
 
 app.listen(port, () => {
   console.log(`Backend Yahoo360 is running on port ${port}`)

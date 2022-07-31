@@ -9,12 +9,13 @@ const sentRequest = async (data, userIdToken) => {
                 }
             }
         }
-        await db.friends.create({
+        const request = await db.friends.create({
             ...data,
             status: false
         })
         return {
-            message: 'Friend request sent successfully!'
+            message: 'Friend request sent successfully!',
+            request
         }
     } catch (error) { return (error) }
 }
@@ -39,8 +40,6 @@ const removeRequest = async (id, userIdToken) => {
                 }
             }
         }
-        // Chấp nhận yêu cầu
-        // Chuyển status
         await request.destroy()
         return {
             message: 'Remove request successfully!',
@@ -70,7 +69,7 @@ const acceptRequest = async (id, userIdToken) => {
         }
         // Chấp nhận yêu cầu
         // Chuyển status
-        await request.update({
+        const friend = await request.update({
             ...request,
             status: true
         })
@@ -82,6 +81,7 @@ const acceptRequest = async (id, userIdToken) => {
         })
         return {
             message: 'Add friend successfully!',
+            friend
         }
     } catch (error) { return (error) }
 }
@@ -126,7 +126,7 @@ const deleteFriend = async (id, userIdToken) => {
                 }
             }
         }
-        if (dataFriend.userId !== userIdToken) {
+        if (dataFriend.friendId !== userIdToken) {
             return {
                 errCode: 403,
                 errors: {

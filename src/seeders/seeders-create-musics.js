@@ -13,7 +13,17 @@ module.exports = {
             Array.from(new Array(nUsers)).forEach((element, key) => {
                 const music = {
                     userId: key + 1,
-                    music: faker.helpers.arrayElement(["Qzc_aX8c8g4", "cPkE0IbDVs4", "YfDqONbzYPc", "60ItHLz5WEA", "YQHsXMglC9A", "3AtDnEC4zak", "bo_efYhYU2A", "RgKAFK5djSk", "RBumgq5yVrA", "ShZ978fBl6Y"]),
+                    music: faker.helpers.arrayElement([
+                        "https://www.youtube.com/watch?v=Qzc_aX8c8g4", 
+                        "https://www.youtube.com/watch?v=cPkE0IbDVs4", 
+                        "https://www.youtube.com/watch?v=YfDqONbzYPc", 
+                        "https://www.youtube.com/watch?v=60ItHLz5WEA", 
+                        "https://www.youtube.com/watch?v=YQHsXMglC9A", 
+                        "https://www.youtube.com/watch?v=3AtDnEC4zak", 
+                        "https://www.youtube.com/watch?v=bo_efYhYU2A", 
+                        "https://www.youtube.com/watch?v=RgKAFK5djSk", 
+                        "https://www.youtube.com/watch?v=RBumgq5yVrA", 
+                        "https://www.youtube.com/watch?v=ShZ978fBl6Y"]),
                     createdAt: new Date(),
                     updatedAt: new Date()
                 }
