@@ -17,6 +17,7 @@ import initAPIFriendsRoutes from './routes/apiFriends';
 import initAPIUsersRoutes from './routes/apiUsers';
 import initAPIAllcodesRoutes from './routes/apiAllcodes';
 import initAPISearchRoutes from './routes/apiSearch';
+import initAPIAdminRoutes from './routes/apiAdmin';
 
 const app = express()
 let port = process.env.PORT || 3000; 
@@ -77,6 +78,9 @@ initAPIAllcodesRoutes(app)
 
 // Init APISearch route
 initAPISearchRoutes(app)
+
+// Init APIAdmin route
+initAPIAdminRoutes(app)
 
 app.listen(port, () => {
   console.log(`Backend Yahoo360 is running on port ${port}`)

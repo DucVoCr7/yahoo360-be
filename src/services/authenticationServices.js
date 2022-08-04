@@ -1,7 +1,8 @@
 import bcrypt from "bcryptjs"
 import db from '../models/index'
 import { createAccessToken, createRefreshToken, saveRefreshToken } from '../utils/JWTAction'
-const cloudinary = require('../utils/cloudinary')
+import jwt from 'jsonwebtoken'
+import 'dotenv/config'
 
 const handleDataInput = (actionReq, dataReq) => {
 
@@ -121,8 +122,33 @@ const register = async (data) => {
         return (error)
     }
 }
-
+const logout = async (refreshToken)=> {
+    try {
+        const data = await db.refreshTokens.findOne({
+            where: { refreshToken: refreshToken },
+        })
+        if (!data) {
+            return {
+                errCode: 403,
+                errors: {
+                    message: 'Refresh token is not valid!'
+                }
+            }
+        }
+        const message = jwt.verify(data.refreshToken, process.env.JWT_REFRESH_SECRET, async (error, dataToken) => {
+            if (error) {
+                return { message: 'Refresh token is not valid!' }
+            }
+            await db.refreshTokens.destroy({where: {userId: dataToken.userId}});
+            return {
+                message: 'You logged out successfully!'
+            }
+        })
+        return message
+    } catch (error) { return (error) }
+}
 module.exports = {
     login: login,
-    register: register
+    register: register,
+    logout: logout
 }
