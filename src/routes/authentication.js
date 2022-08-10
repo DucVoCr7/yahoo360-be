@@ -5,7 +5,7 @@ const router = express.Router()
 const initAuthenticationRoutes = (app)=> {
     router.post('/login', authenticationControllers.login)
     router.post('/register', authenticationControllers.register)
-    router.delete('/logout', authenticationControllers.logout)
+    router.post('/logout', authenticationControllers.logout)
     return app.use ('/api', router)
 }
 
